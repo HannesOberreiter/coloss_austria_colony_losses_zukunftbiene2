@@ -6,7 +6,7 @@
 print("Loading Setup")
 
 # Load Data --------------------------------------------------------------
-files       <- c("18_19")
+files       <- c("17_18", "18_19", "19_20")
 RAW         <- vector("list", length(files))
 
 for(i in seq_along(files)){
@@ -29,7 +29,10 @@ RAW <- RAW %>%
   across(altitude:longitude, as.numeric),
   across(apiaries, as.numeric),
   across(hives_winter:young_queens, as.numeric),
-  across(T_vcount_01:costs, as.numeric)
+  across(T_vcount_01:T_other_12, as.numeric),
+  time = as.numeric(time),
+  costs = as.numeric(costs),
+  loss_acceptance = as.numeric(loss_acceptance)
   )
 
 ## ID ----------------------------------------------------------------------

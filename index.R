@@ -8,3 +8,14 @@ source("partials/header.R")
 source("partials/map.R")
 source("functions/functions.R")
 
+
+# Results -----------------------------------------------------------------
+source("result/1_Beteiligungsrate.R")
+source("result/2_Anonym.R")
+
+
+
+
+
+
+  

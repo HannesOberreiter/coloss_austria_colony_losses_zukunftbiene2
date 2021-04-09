@@ -4,7 +4,10 @@ print("Loading Setup")
 
 # Libraries ---------------------------------------------------------------
 libs <- c(
-  "tidyverse", "here", "readxl", "glue", # Main Packages
+  "tidyverse", "here", "readxl", 
+  "glue", "patchwork", "rlang", 
+  "boot", "ggsignif", "knitr",
+  "kableExtra", # Main Packages
   "sf" # Map
 )
 
@@ -25,8 +28,36 @@ rm(libs, fLoadLibs)
 
 # Misc Settings -------------------------------------------------------
 
-# Increase base font size for our plots
-theme_set(theme_classic(base_size=12))
+# IBasic Theme Settings
+theme_set(
+  theme(
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(),
+    legend.key       = element_blank(),
+    
+    strip.background = element_rect(
+      fill = "white", 
+      colour = "black", size = rel(2)
+      ),
+    panel.spacing = unit( 1, "lines" ),
+    strip.text.x = element_text(size = 11),
+    strip.placement = "outside",
+    
+    plot.title = element_text(hjust = 0), 
+    
+    axis.title.y = element_text(colour = "black", size = 11, angle = 90, vjust = 2 ), 
+    axis.text.y = element_text(angle = 0, size = 11),
+    
+    axis.title.x = element_text(colour = "black" ), 
+    axis.text.x = element_text(angle = 0, hjust = 0.5, size = 11, face = "bold"),
+    axis.line.y = element_line( linetype = "solid", size = 0.5 ),
+    
+    panel.grid.major.y = element_line( colour = "grey"),
+    panel.grid.minor.y = element_line( colour = "lightgrey" )
+  )
+)
+
 
 # Constants ---------------------------------------------------------------
 # Color Definition
