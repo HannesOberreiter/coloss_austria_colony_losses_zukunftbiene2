@@ -1,6 +1,7 @@
 # Description -------------------------------------------------------------
 # Map Loading and generation
-# Important loading order to prevent errors! (https://stackoverflow.com/questions/30790036/error-istruegpclibpermitstatus-is-not-true)
+# Important loading order to prevent errors!
+# (https://stackoverflow.com/questions/30790036/error-istruegpclibpermitstatus-is-not-true)
 # library( rgeos )
 # library( maptools )
 # library( rgdal )
@@ -10,24 +11,23 @@
 # Import ------------------------------------------------------------------
 mapDataPath <- glue("{here()}/data/maps.RData")
 # Read MAPS
-if(!exists("MF_STATES")){
-  if(file.exists(mapDataPath)){
+if (!exists("mfStates")) {
+  if (file.exists(mapDataPath)) {
     load(mapDataPath)
   } else {
-    MAP_AUSTRIA <- read_sf(glue("{here()}/map"))
-    MF_STATES <- MAP_AUSTRIA %>% 
-      group_by(BL) %>% 
+    mapAustria <- read_sf(glue("{here()}/map"))
+    mfStates <- mapAustria %>%
+      group_by(BL) %>%
       summarize(
         geometry = st_union(geometry)
       )
-    MF_DISTRICTS <- MAP_AUSTRIA %>% 
-      group_by(PB) %>% 
+    mfDistricts <- mapAustria %>%
+      group_by(PB) %>%
       summarize(
         geometry = st_union(geometry)
       )
     # save R object to prevent loading each time
-    save(MAP_AUSTRIA, MF_DISTRICTS, MF_STATES, file = mapDataPath)
+    save(mapAustria, mfDistricts, mfStates, file = mapDataPath)
   }
 }
 rm(mapDataPath)
-

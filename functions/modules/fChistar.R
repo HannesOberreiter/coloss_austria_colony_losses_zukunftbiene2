@@ -1,39 +1,48 @@
 # Function which generates a dataframe to draw significant results onto plot
-# D.INPUT = our initial dataframe (see return from F_GLM_FACTOR)
-# f = factor
-# V.START and V.END the two groups to connect
-# V.GROUP if multiple plots are arranged with facet_grid we need here to define column which are used for grouping the grid
-# V.LABEL here we can define what we want to see above the connected significant line
-fChistar <- function(D.INPUT, f, V.START = "Ja", V.END = "Nein", V.GROUP = FALSE, V.LABEL = "*"){
-  myvar <- sym(f)
+# data = our initial dataframe (see return from F_GLM_FACTOR)
+# f = factor of Interest
+# startPoint and endPoint the two groups to connect
+# myGroup if multiple plots are arranged with
+# facet_grid we need here to define column which are used for grouping the grid
+# myLabel here we can define what we want to see 
+# above the connected significant line
+fChistar <- function(
+  data = x,
+  myFactor = f, 
+  startPoint = "Ja", 
+  endPoint = "Nein", 
+  myGroup = FALSE, 
+  myLabel = "*"
+  ){
+  myVar <- sym(myFactor)
   # generate chistar brackets temporary dataframe
-  D.TEMP <- D.INPUT %>% filter(chistar == TRUE)
+  dataTemp <- data %>% filter(chistar == TRUE)
   # return empty if nothing is significant
-  if(nrow(D.TEMP) == 0){
+  if(nrow(dataTemp) == 0){
     print("No signifikant results inside given DF")
-    return(D.TEMP)
+    return(dataTemp)
   }
   # easy logic if two flavors are given
-  if(length(unique(D.TEMP[[myvar]])) == 2){
-    V.START <- unique(D.TEMP[[myvar]][1])
-    V.END   <- unique(D.TEMP[[myvar]][2])
+  if(length(unique(dataTemp[[myVar]])) == 2){
+    startPoint <- unique(dataTemp[[myVar]][1])
+    endPoint   <- unique(dataTemp[[myVar]][2])
   }
   yearRes <- list()
-  for(i in unique(D.TEMP$year)){
-    yearDf <- D.TEMP %>% filter(year == i)
+  for(i in unique(dataTemp$year)){
+    yearDf <- dataTemp %>% filter(year == i)
     startUpper <- yearDf %>% 
-      filter({{myvar}} == V.START) %>% 
+      filter({{myVar}} == startPoint) %>% 
       pull(upper)
     endUpper <- yearDf %>% 
-      filter({{myvar}} == V.END) %>% 
+      filter({{myVar}} == endPoint) %>% 
       pull(upper)
     yearRes[[i]] <- 
       tibble(
         year   = i,
-        start  = yearDf %>%  filter({{myvar}} == V.START) %>% pull({{myvar}}), 
-        end    = yearDf %>%  filter({{myvar}} == V.END) %>% pull({{myvar}}), 
+        start  = yearDf %>%  filter({{myVar}} == startPoint) %>% pull({{myVar}}), 
+        end    = yearDf %>%  filter({{myVar}} == endPoint) %>% pull({{myVar}}), 
         y      = ifelse(startUpper > endUpper, startUpper, endUpper) + 2, 
-        label  = V.LABEL
+        label  = myLabel
       )
   }
   return(bind_rows(yearRes))

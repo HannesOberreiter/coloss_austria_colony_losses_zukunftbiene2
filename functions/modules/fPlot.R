@@ -26,7 +26,7 @@ fPlot <- function(x, chi, f){
       expand = expansion(mult = c(0, 0.1))
     ) +
     facet_wrap(~ year, ncol = 2)
-  if(nrow(y)>0){
+  if (nrow(chi) > 0) {
     p <- p + 
       geom_signif(
         data=chi, 

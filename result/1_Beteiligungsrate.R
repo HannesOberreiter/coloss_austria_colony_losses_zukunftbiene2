@@ -31,6 +31,9 @@ res1_Beteiligungsrate$p1 <- res1_Beteiligungsrate$data %>%
     #labels = c(" Veränderung \n der Gesamtzahl \n seit 2013\n", " Anteil in \n der Umfrage"),
     #guide = "legend"
   ) +
+  theme(
+    axis.line.x = element_line(linetype = "solid", size = 0.5),
+  ) + 
   ylab("Veränderung seit 2013 [%]") + xlab("") + 
   #labs(tag = "A") +
   scale_y_continuous(breaks = seq(-100, 100, 5)) +
@@ -44,11 +47,14 @@ res1_Beteiligungsrate$p2 <- res1_Beteiligungsrate$data %>%
   #geom_point(aes(y = hRate, group = 1, color = colorBlindBlack8[2]),  size = 2) +
   scale_color_identity(
     ) +
+  theme(
+    axis.line.x = element_line(linetype = "solid", size = 0.5),
+  ) + 
   ylab("Veränderung seit 2013 [%]") + xlab("") +
   #labs(tag = "B") +
   scale_y_continuous(breaks = seq(-100, 100, 5)) +
   facet_grid( ~ "Bienenvölker")
 
 
-fSaveImages("Beteiligungsrate", res1_Beteiligungsrate$p1 / res1_Beteiligungsrate$p2, h = 4 * 1.5)
+fSaveImages("1_Beteiligungsrate", res1_Beteiligungsrate$p1 / res1_Beteiligungsrate$p2, h = 4 * 1.5)
 

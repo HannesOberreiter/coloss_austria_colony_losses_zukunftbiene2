@@ -1,5 +1,5 @@
 # Description -------------------------------------------------------------
-# This code will generate a list of altitudes 
+# This code will generate a list of altitudes
 # uses open source access off geonames.org
 # altitude from satellite images GNsrtm3
 
@@ -20,37 +20,33 @@ source("partials/header.R")
 
 # Code --------------------------------------------------------------------
 # remove empty ones if there are any
-D.CACHE <- RAW %>% drop_na(longitude, latitude)
+dfCache <- dfData %>% drop_na(longitude, latitude)
 # select start and end number of row
 # please be careful with hard limit of API for altitude, max. 1_000 per hour and 10_000 per day
-paste("Max rows in our dataframe: ", nrow(D.CACHE))
+paste("Max rows in our dataframe: ", nrow(dfCache))
 
 # Start and End Row we want to get elevation
-ROW.START = 1
-ROW.END = 10
-#ROW.END   = nrow(D.CACHE)
+rowStart <- 1
+rowEnd   <- 10
+#rowEnd    <- nrow(dfCache)
 
 # Create a Named Vector with IDS
-V.IDS    <- D.CACHE$id[ROW.START:ROW.END]
-V.VALUES <- setNames(rep(NA, length(V.IDS)), V.IDS)
+vIDs    <- dfCache$id[rowStart:rowEnd]
+vValues <- setNames(rep(NA, length(vIDs)), vIDs)
 
 # Loop with given limits
-for (i in ROW.START:ROW.END) {
-  L.ID        <- D.CACHE$id[i]
-  L.ELEVATION <- GNsrtm3(lat = D.CACHE[i, "latitude"], lng = D.CACHE[i, "longitude"])$srtm3
-  print(paste("ID:", L.ID, " Elevation: ", L.ELEVATION))
-  V.VALUES[L.ID] <- L.ELEVATION
+for (i in rowStart:rowEnd) {
+  lID        <- dfCache$id[i]
+  lElevation <- GNsrtm3(lat = dfCache[i, "latitude"], lng = dfCache[i, "longitude"])$srtm3
+  print(paste("ID:", lID, " Elevation: ", lElevation))
+  vValues[lID] <- lElevation
   Sys.sleep(4) # we prevent overuse (1k : 1 hour)
 }
 print("------RESULTS--------")
-V.VALUES
+vValues
 print("---------------------")
 # save to csv
 write_excel_csv2(
-  as_tibble(V.VALUES, rownames = "id"),
-  file = glue('{here()}/output/altitude.csv')
+  as_tibble(vValues, rownames = "id"),
+  file = glue("{here()}/output/altitude.csv")
   )
-
-
-
-

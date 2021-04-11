@@ -2,7 +2,7 @@
 # Numer of Participants longitudal ----------------------------------------
 
 
-RAW %>% 
+dfData %>% 
   drop_na(contact) %>% 
   group_by(year, contact) %>% 
   summarise(

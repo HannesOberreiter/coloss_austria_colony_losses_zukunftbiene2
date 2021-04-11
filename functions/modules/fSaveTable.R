@@ -1,6 +1,6 @@
-fSaveTable <- function(x, caption, f, filename){
-  myvar <- sym(f)
-  tab <- x %>% 
+fSaveTable <- function(filename = filename, data = x, caption = caption, myFactor = f){
+  myvar <- sym(myFactor)
+  tab <- data %>% 
     mutate(
       np = fPrettyNum(np),
       ci = paste0("(", fPrettyNum(lower), " - ", fPrettyNum(upper), ")")
@@ -10,15 +10,24 @@ fSaveTable <- function(x, caption, f, filename){
     ) %>% 
     kable(
       "latex",
-      caption = c,
+      caption = caption,
       booktabs = T,
       escape = F,
-      col.names = c("", "[\\textit{n}]", "[\\%]", "Verlustrate [\\%]", "95\\% CI [\\%]"),
+      col.names = c("", "Imkereien [\\textit{n}]", "[\\%]", "Verlustrate [\\%]", "95\\% CI [\\%]"),
       align = c("l", rep("r", 4))
     ) %>% 
-    pack_rows("17/18", 1, 2) %>% 
-    pack_rows("18/19", 3, 4) %>% 
-    pack_rows("19/20", 5, 6)
+    kable_styling(latex_options = "HOLD_position")
+
+  begin <- 1
+  for (i in unique(x$year)) {
+    end <- begin + nrow(x %>% filter(year == i)) - 1
+    tab <- tab %>% pack_rows(i, begin, end)
+    begin <- end + 1
+  }
   
-  tab %>% save_kable(paste0("output/", filename, ".tex"))
+  tab %>% save_kable(paste0("output/tables/", filename, ".tex"))
 }
+
+
+
+

@@ -44,7 +44,7 @@ fGlm <- function(df, f){
     # Calculate odds via model for factors  
     prePredict <- predict(
       resGLM,
-      tibble(!!myvar := as.factor(levels(RAW %>% pull( {{ myvar }} )))),
+      tibble(!!myvar := as.factor(levels(dfData %>% pull( {{ myvar }} )))),
       type = "link",
       se.fit = T
     )
@@ -57,7 +57,7 @@ fGlm <- function(df, f){
     CACHE.UPPERLIM <- fNumberFormat( inv.logit( CACHE.UPPERLIM ) * 100 )
     yearRes[[i]] <- tibble(
       year    = i,
-      !!myvar := levels(RAW %>% pull( {{ myvar }} )) %>% as.character(),
+      !!myvar := levels(dfData %>% pull( {{ myvar }} )) %>% as.character(),
       middle  = CACHE.ODDS,
       lower   = CACHE.LOWERLIM,
       upper   = CACHE.UPPERLIM,
