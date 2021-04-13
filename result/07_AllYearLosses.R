@@ -1,7 +1,7 @@
-res05_allYearLosses <- list()
+res07_allYearLosses <- list()
 
 # Hard-Coded as I don't have all previous years
-res05_allYearLosses$data <- tibble::tribble(
+res07_allYearLosses$data <- tibble::tribble(
       ~year, ~middle, ~lowerlim, ~upperlim,   ~n, ~ncolonies,
   "2007/08",    13.3,       9.9,      16.7,  374,      16217,
   "2008/09",     9.3,       6.9,      11.6,  575,      18141,
@@ -20,33 +20,33 @@ res05_allYearLosses$data <- tibble::tribble(
   )
 
 # Plot Data Helper
-res05_allYearLosses$totalSummary <- c(
-  "totalMean"       = mean(res05_allYearLosses$data$middle),
-  "totalMedian"     = median(res05_allYearLosses$data$middle),
-  "totalPooledMean" = sum(res05_allYearLosses$data$middle * res05_allYearLosses$data$n) / sum(res05_allYearLosses$data$n),
-  "totalSD"         = sd(res05_allYearLosses$data$middle)
+res07_allYearLosses$totalSummary <- c(
+  "totalMean"       = mean(res07_allYearLosses$data$middle),
+  "totalMedian"     = median(res07_allYearLosses$data$middle),
+  "totalPooledMean" = sum(res07_allYearLosses$data$middle * res07_allYearLosses$data$n) / sum(res07_allYearLosses$data$n),
+  "totalSD"         = sd(res07_allYearLosses$data$middle)
   )
 
-#V.POOLED_LOWER <- sum(res05_allYearLosses$data$lowerlim * res05_allYearLosses$data$n) / sum(res05_allYearLosses$data$n)
-#V.POOLED_UPPER <- sum(res05_allYearLosses$data$upperlim * res05_allYearLosses$data$n) / sum(res05_allYearLosses$data$n)
+#V.POOLED_LOWER <- sum(res07_allYearLosses$data$lowerlim * res07_allYearLosses$data$n) / sum(res07_allYearLosses$data$n)
+#V.POOLED_UPPER <- sum(res07_allYearLosses$data$upperlim * res07_allYearLosses$data$n) / sum(res07_allYearLosses$data$n)
 
-res05_allYearLosses$p <- res05_allYearLosses$data %>% 
+res07_allYearLosses$p <- res07_allYearLosses$data %>% 
   ggplot(
     aes(y = year, x = middle)
     ) +
   geom_vline(
-    xintercept = res05_allYearLosses$totalSummary[["totalMean"]] - res05_allYearLosses$totalSummary[["totalSD"]], 
+    xintercept = res07_allYearLosses$totalSummary[["totalMean"]] - res07_allYearLosses$totalSummary[["totalSD"]], 
     linetype="dashed", color = "red", size=1
     ) +
   geom_vline(
-    xintercept = res05_allYearLosses$totalSummary[["totalMean"]] + res05_allYearLosses$totalSummary[["totalSD"]], 
+    xintercept = res07_allYearLosses$totalSummary[["totalMean"]] + res07_allYearLosses$totalSummary[["totalSD"]], 
     linetype="dashed", color = "red", size=1
     ) +
   geom_vline(
-    xintercept = res05_allYearLosses$totalSummary[["totalMean"]], color = "red", size=1
+    xintercept = res07_allYearLosses$totalSummary[["totalMean"]], color = "red", size=1
     ) +
   geom_vline(
-    xintercept = res05_allYearLosses$totalSummary[["totalMedian"]], color = "blue", size=1
+    xintercept = res07_allYearLosses$totalSummary[["totalMedian"]], color = "blue", size=1
     ) +
   geom_crossbar(
     aes( xmin = lowerlim, xmax = upperlim ), 
@@ -73,10 +73,10 @@ res05_allYearLosses$p <- res05_allYearLosses$data %>%
   ) +
   scale_x_continuous(
     sec.axis = dup_axis(),
-    limits   = c(0, max(res05_allYearLosses$data$upperlim)*1.1),
+    limits   = c(0, max(res07_allYearLosses$data$upperlim)*1.1),
     expand   = c( 0 , 0 ),
     breaks   = seq( 0, 100, 5 )
   )
 
-fSaveImages("06_AllYear", res05_allYearLosses$p, w = 12)
+fSaveImages("07_AllYear", res07_allYearLosses$p, w = 12)
 

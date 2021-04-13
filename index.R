@@ -14,5 +14,7 @@ source("result/02_Anonym.R")
 source("result/03_Submitted.R")
 source("result/04_OperationSize.R")
 # source("result/05_DistMap.R")
-source("result/06_AllYearLosses.R")
+source("result/06_Radius.R")
+source("result/07_AllYearLosses.R")
+source("result/08_Population.R")
 
