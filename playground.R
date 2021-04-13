@@ -2,17 +2,15 @@
 # Numer of Participants longitudal ----------------------------------------
 
 
-dfData %>% 
-  drop_na(contact) %>% 
-  group_by(year, contact) %>% 
+dfData %>%
+  drop_na(contact) %>%
+  group_by(year, contact) %>%
   summarise(
     contact = contact[[1]]
-  ) %>% 
-  ungroup() %>% 
-  count(contact, name = "times") %>% 
-  group_by(times) %>% 
+  ) %>%
+  ungroup() %>%
+  count(contact, name = "times") %>%
+  group_by(times) %>%
   summarise(
     n = n()
   )
-
-

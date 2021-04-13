@@ -7,7 +7,7 @@ libs <- c(
   "tidyverse", "here", "readxl",
   "glue", "patchwork", "rlang",
   "boot", "ggsignif", "knitr",
-  "kableExtra", "lintr",
+  "kableExtra", "lintr", "skimr",
   "sf"
 )
 

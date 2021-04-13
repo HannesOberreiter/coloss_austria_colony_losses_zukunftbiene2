@@ -1,19 +1,19 @@
 # df = Dataset
 # f = string of factor
 # returns tibble
-fGlm <- function(df, f){
+fGlm <- function(df, f) {
   myvar  <- sym(f) # convert string to symbol to use it with rlang
   # create count table
   result <- df %>%
-    add_count(year, name = "totalN") %>% 
-    group_by(year, {{ myvar }}) %>% 
+    add_count(year, name = "totalN") %>%
+    group_by(year, {{ myvar }}) %>%
     summarise(
       n  = n(),
-      np = fNumberFormat(n() * 100/ totalN[[1]]),
-      control_rate = as.numeric( format( round(
-        ( sum( hives_lost_e ) / sum( hives_winter ) * 100 ), 1), nsmall = 2)),
+      np = fNumberFormat(n() * 100 / totalN[[1]]),
+      control_rate = as.numeric(format(round(
+        (sum(hives_lost_e) / sum(hives_winter) * 100 ), 1), nsmall = 2)),
       .groups = "drop"
-    ) %>% 
+    ) %>%
     mutate(
       # mutate it to character for joining, as factor does not work
       !!myvar := as.character({{myvar}})
@@ -21,19 +21,19 @@ fGlm <- function(df, f){
   # If multiple years we generate here a the results for it
   # we don't use map here because its easier to read inside the loop
   yearRes <- list()
-  for(i in unique(df$year)){
+  for (i in unique(df$year)) {
     yearDf <- df %>% filter(year == i)
-    
-    resGLM <- glm( 
+
+    resGLM <- glm(
       as.formula(glue(
         "cbind(hives_lost_e, hives_spring_e)~{myvar}"
-      )), 
-      family = quasibinomial( link = "logit" ), 
+      )),
+      family = quasibinomial(link = "logit"),
       data = yearDf, na.action = na.omit
     )
-    sumGLM   <- summary( resGLM )
+    # sumGLM   <- summary(resGLM)
     # We do a ChiSq Statistical Test if two factors are given
-    resANOVA <- anova( resGLM, test = "Chisq" )
+    resANOVA <- anova(resGLM, test = "Chisq")
     chistar  <- FALSE
     if(nrow(resANOVA) > 1){
       if(resANOVA[[5]][2] < 0.05){
@@ -62,13 +62,13 @@ fGlm <- function(df, f){
       lower   = CACHE.LOWERLIM,
       upper   = CACHE.UPPERLIM,
       chistar = chistar
-    ) %>% 
+    ) %>%
       mutate(
         # mutate it to character for joining, as factor does not work
         !!myvar := as.character({{myvar}})
       )
   }
-  result <- result %>% 
+  result <- result %>%
     left_join(bind_rows(yearRes), by = c("year", as.character(myvar)))
-  return (result)
+  return(result)
 }

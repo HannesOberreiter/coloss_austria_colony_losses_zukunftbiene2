@@ -1,4 +1,4 @@
-fSaveTable <- function(filename = filename, data = x, caption = caption, myFactor = f){
+fSaveTable <- function(filename = filename, data = x, caption = caption, myFactor = f, latexLabel = l){
   myvar <- sym(myFactor)
   tab <- data %>% 
     mutate(
@@ -11,6 +11,7 @@ fSaveTable <- function(filename = filename, data = x, caption = caption, myFacto
     kable(
       "latex",
       caption = caption,
+      label = latexLabel,
       booktabs = T,
       escape = F,
       col.names = c("", "Imkereien [\\textit{n}]", "[\\%]", "Verlustrate [\\%]", "95\\% CI [\\%]"),
@@ -19,8 +20,8 @@ fSaveTable <- function(filename = filename, data = x, caption = caption, myFacto
     kable_styling(latex_options = "HOLD_position")
 
   begin <- 1
-  for (i in unique(x$year)) {
-    end <- begin + nrow(x %>% filter(year == i)) - 1
+  for (i in unique(data$year)) {
+    end <- begin + nrow(data %>% filter(year == i)) - 1
     tab <- tab %>% pack_rows(i, begin, end)
     begin <- end + 1
   }

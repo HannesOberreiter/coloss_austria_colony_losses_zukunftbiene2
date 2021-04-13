@@ -1,6 +1,6 @@
-res1_Beteiligungsrate <- list()
+res01_Beteiligungsrate <- list()
 
-res1_Beteiligungsrate$data <- tibble::tribble(
+res01_Beteiligungsrate$data <- tibble::tribble(
   ~year,    ~iPop,   ~iSurvey, ~iRate,     ~hPop,    ~hSurvey,  ~hRate,
   "2013/14", 25492,      1023,  4.0,      382638,       18794,     4.9,
   "2014/15", 25277,      1259,  5.0,      376121,       22882,     6.1,
@@ -17,10 +17,10 @@ res1_Beteiligungsrate$data <- tibble::tribble(
     year_short = str_replace(year, "20", "")
   )
 
-res1_Beteiligungsrate$data$pcolor <- colorBlindBlack8[3]
-res1_Beteiligungsrate$data$pcolor[5:8] <- colorBlindBlack8[6]
+res01_Beteiligungsrate$data$pcolor <- colorBlindBlack8[3]
+res01_Beteiligungsrate$data$pcolor[5:8] <- colorBlindBlack8[6]
 
-res1_Beteiligungsrate$p1 <- res1_Beteiligungsrate$data %>% 
+res01_Beteiligungsrate$p1 <- res01_Beteiligungsrate$data %>% 
   ggplot(aes(x = year_short)) +
   geom_line(aes(y = iPopRate, group = 2, color = pcolor)) +
   geom_point(aes(y = iPopRate, group = 2, color = pcolor), size = 2) +
@@ -39,7 +39,7 @@ res1_Beteiligungsrate$p1 <- res1_Beteiligungsrate$data %>%
   scale_y_continuous(breaks = seq(-100, 100, 5)) +
   facet_grid( ~ "Imkereien")
 
-res1_Beteiligungsrate$p2 <- res1_Beteiligungsrate$data %>% 
+res01_Beteiligungsrate$p2 <- res01_Beteiligungsrate$data %>% 
   ggplot(aes(x = year_short)) +
   geom_line(aes(y = hPopRate, group = 2, color = pcolor)) +
   geom_point(aes(y = hPopRate, group = 2, color = pcolor), size = 2) +
@@ -56,5 +56,5 @@ res1_Beteiligungsrate$p2 <- res1_Beteiligungsrate$data %>%
   facet_grid( ~ "Bienenvölker")
 
 
-fSaveImages("1_Beteiligungsrate", res1_Beteiligungsrate$p1 / res1_Beteiligungsrate$p2, h = 4 * 1.5)
+fSaveImages("01_Beteiligungsrate", res01_Beteiligungsrate$p1 / res01_Beteiligungsrate$p2, h = 4 * 1.5)
 
