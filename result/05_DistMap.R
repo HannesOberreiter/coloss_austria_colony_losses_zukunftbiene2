@@ -16,7 +16,7 @@ res5_DistMap$data <- res5_DistMap$data %>%
     freq = proportions(n) * 100
   ) %>% 
   # join with map source
-  left_join(mfDistricts, by = c("district" = "PB"))
+  left_join(mfDistrictsSimplify, by = c("district" = "PB"))
 
 res5_DistMap$labels <- res5_DistMap$data %>% 
   group_by(year) %>% 
@@ -32,7 +32,7 @@ res5_DistMap$labels <- as_labeller(res5_DistMap$labels)
 res5_DistMap$p <- res5_DistMap$data %>% 
   ggplot() +
   geom_sf(
-    data = mfStates, 
+    data = mfStatesSimplify, 
     aes(group = BL), 
     color = "black", 
     size = 0.6, 
@@ -64,5 +64,3 @@ res5_DistMap$p <- res5_DistMap$data %>%
     )
 
 fSaveImages("05_DistrMapN", res5_DistMap$p)
-
-rm(res5_DistMap)

@@ -23,19 +23,31 @@ fGlm <- function(df, f) {
   yearRes <- list()
   for (i in unique(df$year)) {
     yearDf <- df %>% filter(year == i)
-
-    resGLM <- glm(
-      as.formula(glue(
-        "cbind(hives_lost_e, hives_spring_e)~{myvar}"
-      )),
-      family = quasibinomial(link = "logit"),
-      data = yearDf, na.action = na.omit
-    )
+    
+    if(f != "global"){
+      resGLM <- glm(
+        as.formula(glue(
+          "cbind(hives_lost_e, hives_spring_e)~{myvar}"
+        )),
+        family = quasibinomial(link = "logit"),
+        data = yearDf, na.action = na.omit
+      )
+    } else {
+      resGLM <- glm(
+        as.formula(glue(
+          "cbind(hives_lost_e, hives_spring_e)~1"
+        )),
+        family = quasibinomial(link = "logit"),
+        data = yearDf, na.action = na.omit
+      )
+    }
+    
+    
     # sumGLM   <- summary(resGLM)
     # We do a ChiSq Statistical Test if two factors are given
     resANOVA <- anova(resGLM, test = "Chisq")
     chistar  <- FALSE
-    if(nrow(resANOVA) > 1){
+    if(nrow(resANOVA) > 1 & f != "global"){
       if(resANOVA[[5]][2] < 0.05){
         chistar <- TRUE
       }

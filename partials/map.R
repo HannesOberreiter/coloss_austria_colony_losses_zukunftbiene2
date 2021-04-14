@@ -21,13 +21,15 @@ if (!exists("mfStates")) {
       summarize(
         geometry = st_union(geometry)
       )
+    mfStatesSimplify <- mfStates %>% st_simplify(dTolerance = 0.002)
     mfDistricts <- mapAustria %>%
       group_by(PB) %>%
       summarize(
         geometry = st_union(geometry)
       )
+    mfDistrictsSimplify <- mfDistricts %>% st_simplify(dTolerance = 0.002)
     # save R object to prevent loading each time
-    save(mapAustria, mfDistricts, mfStates, file = mapDataPath)
+    save(mapAustria, mfDistricts, mfStates, mfStatesSimplify, mfDistrictsSimplify, file = mapDataPath)
   }
 }
 rm(mapDataPath)
