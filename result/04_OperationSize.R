@@ -1,4 +1,4 @@
-res4_OperationSize <- list()
+res04_OperationSize <- list()
 
 dfData <- dfData %>% 
   mutate(
@@ -11,7 +11,7 @@ dfData <- dfData %>%
     operation_size = fct_relevel(operation_size, "> 100", after = Inf)
   )
 
-res4_OperationSize$result <- dfData %>% 
+res04_OperationSize$result <- dfData %>% 
   add_count(year) %>%
   group_by(year) %>% 
   mutate(
@@ -27,12 +27,12 @@ res4_OperationSize$result <- dfData %>%
     .groups = "drop"
   )
 
-res4_OperationSize$skim <- dfData %>%
+res04_OperationSize$skim <- dfData %>%
   select(year, hives_winter) %>% 
   group_by(year) %>% 
   skim()
 
-res4_OperationSize$p1 <- res4_OperationSize$result %>% 
+res04_OperationSize$p1 <- res04_OperationSize$result %>% 
   ggplot(
     aes(x = operation_size, y = npBeek, fill = year)
     ) +
@@ -63,7 +63,7 @@ res4_OperationSize$p1 <- res4_OperationSize$result %>%
 
 
 
-res4_OperationSize$p2 <- res4_OperationSize$result %>% 
+res04_OperationSize$p2 <- res04_OperationSize$result %>% 
   ggplot(
     aes(x = operation_size, y = npHives, fill = year)
     ) +
@@ -92,6 +92,6 @@ res4_OperationSize$p2 <- res4_OperationSize$result %>%
   xlab("Völker / Imkerei") + 
   ylab("Bienenvölker [%]") 
 
-fSaveImages("04_OperationSize", res4_OperationSize$p1 / res4_OperationSize$p2)
+fSaveImages("04_OperationSize", res04_OperationSize$p1 / res04_OperationSize$p2)
 
 

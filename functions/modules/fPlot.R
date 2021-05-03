@@ -1,18 +1,18 @@
 fPlot <- function(x, chi, f){
-  myvar <- sym(f)
-  
+  myvar <- rlang::sym(f)
+
   # Facet ~ Labels 
   # year (n=participants)
-  labels <- x %>% 
-    group_by(year) %>% 
+  labels <- x %>%
+    group_by(year) %>%
     summarise(
       n = sum(n),
       n = paste0(year[[1]], " (n=", n, ")")
     ) %>% 
     pull(n)
   names(labels) <- unique(x$year)
-  labels <- as_labeller(labels)
-  
+  labels <- ggplot2::as_labeller(labels)
+
   p <- x %>%
     ggplot(aes(x = {{myvar}}, y = middle, color = year)) +
     geom_crossbar(
@@ -29,7 +29,7 @@ fPlot <- function(x, chi, f){
     geom_text(
       aes(
         y = 0.5,
-        label = glue("n = {np}%")
+        label = glue("n = {n}")
       ),
       vjust = 0,
       color = "black",
@@ -44,7 +44,7 @@ fPlot <- function(x, chi, f){
       ncol = 2,
       labeller = labels
       )
-  
+
   if (nrow(chi) > 0) {
     p <- p + 
       geom_signif(

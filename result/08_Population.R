@@ -83,17 +83,17 @@ res08_Population$p <- ggplot(data = res08_Population$dPop) +
     panel.grid.major.y = element_line( colour = "grey" )
   ) +
   scale_x_continuous(
-    limits = c( NA, max(dPop$idu)+0.5 ),
+    limits = c( NA, max(res08_Population$dPop$idu)+0.5 ),
     breaks = seq(1.5,length(vYears)*2,2),
     labels = vYears
     #labels= D_DATA$season
   ) +
   scale_y_continuous(
     expand = c( 0 , 0 ),
-    breaks = seq( 0, max(dPop$value)+50, 50 ),
-    limits = c( 0, max(dPop$value)+50 )
+    breaks = seq( 0, max(res08_Population$dPop$value)+50, 50 ),
+    limits = c( 0, max(res08_Population$dPop$value)+50 )
   )
 
-rm(vStart, vYears)
+rm(vStart, vYears, dConst)
 
 fSaveImages("08_Population", res08_Population$p, h = 3.5)

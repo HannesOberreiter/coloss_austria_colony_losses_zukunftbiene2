@@ -1,14 +1,14 @@
-res5_DistMap <- list()
+res05_DistMap <- list()
 
 # Data Cleanup
-res5_DistMap$data <- dfData %>%
+res05_DistMap$data <- dfData %>%
   drop_na(longitude, latitude) %>% 
   filter(
     # Drop "In mehr as einem Bezirk" because we cannot know which one it belongs to
     district != "In mehr als einem Bezirk"
   )
 # Caculate Proportions
-res5_DistMap$data <- res5_DistMap$data %>%
+res05_DistMap$data <- res05_DistMap$data %>%
   count(year, district) %>%
   group_by(year) %>%
   mutate(
@@ -18,7 +18,7 @@ res5_DistMap$data <- res5_DistMap$data %>%
   # join with map source
   left_join(mfDistrictsSimplify, by = c("district" = "PB"))
 
-res5_DistMap$labels <- res5_DistMap$data %>% 
+res05_DistMap$labels <- res05_DistMap$data %>% 
   group_by(year) %>% 
   summarise(
     n = sum(n),
@@ -26,10 +26,10 @@ res5_DistMap$labels <- res5_DistMap$data %>%
   ) %>% 
   pull(n)
 
-names(res5_DistMap$labels) <- unique(res5_DistMap$data$year)
-res5_DistMap$labels <- as_labeller(res5_DistMap$labels)
+names(res05_DistMap$labels) <- unique(res05_DistMap$data$year)
+res05_DistMap$labels <- as_labeller(res05_DistMap$labels)
 
-res5_DistMap$p <- res5_DistMap$data %>% 
+res05_DistMap$p <- res05_DistMap$data %>% 
   ggplot() +
   geom_sf(
     data = mfStatesSimplify, 
@@ -60,7 +60,7 @@ res5_DistMap$p <- res5_DistMap$data %>%
   facet_wrap(
     ~ year,
     ncol = 2,
-    labeller = res5_DistMap$labels
+    labeller = res05_DistMap$labels
     )
 
-fSaveImages("05_DistrMapN", res5_DistMap$p)
+fSaveImages("05_DistrMapN", res05_DistMap$p)

@@ -73,7 +73,11 @@ res09_States$all <- bind_rows(res09_States$resultCount, res09_States$globalCount
 tab <- res09_States$all %>% 
   mutate(
     middle = fPrettyNum(middle),
-    ci = paste0("(", fPrettyNum(lower), " - ", fPrettyNum(upper), ")")
+    ci = paste0("(", fPrettyNum(lower), " - ", fPrettyNum(upper), ")"),
+    hives_winter = fPrettyNum(hives_winter, 0),
+    lost_queens = fPrettyNum(lost_queens, 0),
+    lost_all = fPrettyNum(lost_all, 0),
+    beekeeper = fPrettyNum(beekeeper, 0),
   ) %>%
   select(
     state, beekeeper, hives_winter, lost_queens, lost_other, lost_all, middle, ci
@@ -147,7 +151,7 @@ res09_States$p <- res09_States$result %>%
   geom_text(
     aes(
       y = 0.5,
-      label = glue("n = {np}%")
+      label = glue("n = {n}")
     ),
     vjust = 0,
     color = "black",
@@ -200,7 +204,7 @@ res09_States$pMap <- res09_States$result_map %>%
     direction = -1,
     breaks = c(8, 10, 12, 14, 16, 18, 20)
   ) +
-  labs(fill = "Mittlere Verlustrate [%]") +
+  labs(fill = "Verlustrate [%]") +
   facet_wrap(
     ~ year,
     ncol = 2,

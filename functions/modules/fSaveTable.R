@@ -2,6 +2,7 @@ fSaveTable <- function(filename = filename, data = x, caption = caption, myFacto
   myvar <- sym(myFactor)
   tab <- data %>% 
     mutate(
+      n  = fPrettyNum(n, 0),
       np = fPrettyNum(np),
       ci = paste0("(", fPrettyNum(lower), " - ", fPrettyNum(upper), ")")
     ) %>% 

@@ -2,7 +2,6 @@
 # Loading Data and Cleanup
 # Cleanup and Loss Rate Calculation
 # Adding of Cols for Treatments etc.
-
 print("Loading Setup")
 
 # Load Data --------------------------------------------------------------
