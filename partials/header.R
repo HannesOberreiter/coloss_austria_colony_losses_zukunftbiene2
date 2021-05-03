@@ -255,4 +255,10 @@ dfData <- dfData %>%
   ) %>%
   ungroup()
 
+# Global Helper for GLM ---------------------------------------------------
+dfData <- dfData %>% 
+  mutate(
+    global = as.factor(1)
+  )
+
 print("Setup Loaded")

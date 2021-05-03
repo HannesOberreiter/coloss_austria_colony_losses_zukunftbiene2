@@ -24,6 +24,7 @@ res04_OperationSize$result <- dfData %>%
     nHives = sum(hives_winter),
     npHives = nHives * 100 / sumHives[[1]],
     nHives = format(nHives, big.mark = ".", decimal.mark = ","),
+    legend_plot = glue("{year[[1]]} (n = {n[[1]]})"),
     .groups = "drop"
   )
 
@@ -34,7 +35,7 @@ res04_OperationSize$skim <- dfData %>%
 
 res04_OperationSize$p1 <- res04_OperationSize$result %>% 
   ggplot(
-    aes(x = operation_size, y = npBeek, fill = year)
+    aes(x = operation_size, y = npBeek, fill = legend_plot)
     ) +
   geom_col(position = "dodge") +
   geom_text(
@@ -56,12 +57,14 @@ res04_OperationSize$p1 <- res04_OperationSize$result %>%
   scale_colour_manual(
     values = colorBlindBlack8[-1], 
     aesthetics = "fill", 
-    guide = guide_legend("Jahr")
+    guide = guide_legend(
+      title = "Jahr",
+      label.position = "bottom",
+      label.hjust = 0
+      )    
     ) + 
   xlab("Völker / Imkerei") + 
   ylab("Teilnehmende Imkereien [%]") 
-
-
 
 res04_OperationSize$p2 <- res04_OperationSize$result %>% 
   ggplot(
