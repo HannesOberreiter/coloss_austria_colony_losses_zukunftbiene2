@@ -1,12 +1,13 @@
 res11_Symptoms <- list()
 
-res11_Symptoms$result <- dfData%>% filter(
-  # Only care for symptoms if colonies are lost
-  hives_lost_e != 0 &
-  # Only care if symptoms were reported
-  symp_total > 0
-) %>% 
-  group_by(year) %>% 
+res11_Symptoms$result <- dfData %>%
+  filter(
+    # Only care for symptoms if colonies are lost
+    hives_lost_e != 0 &
+      # Only care if symptoms were reported
+      symp_total > 0
+  ) %>%
+  group_by(year) %>%
   summarise(
     symptomes = c("a)", "b)", "c)", "d)", "e)"),
     symptomes_values = c(sum(symp_a), sum(symp_b), sum(symp_c), sum(symp_d), sum(symp_e)),
@@ -19,7 +20,7 @@ res11_Symptoms$result <- dfData%>% filter(
     .groups = "drop"
   )
 
-res11_Symptoms$p <- res11_Symptoms$result %>% 
+res11_Symptoms$p <- res11_Symptoms$result %>%
   ggplot(
     aes(x = symptomes, y = symptomes_percent, fill = legend_plot)
   ) +
@@ -40,20 +41,19 @@ res11_Symptoms$p <- res11_Symptoms$result %>%
   ) +
   theme(
     axis.line.x = element_line(linetype = "solid", size = 0.5),
-    #legend.spacing.y = unit(5.0, 'cm')
+    legend.position = "top"
+    # legend.spacing.y = unit(5.0, 'cm')
   ) +
   scale_colour_manual(
     values = colorBlindBlack8[-1],
-    aesthetics = "fill", 
+    aesthetics = "fill",
     guide = guide_legend(
       title = "Jahr",
       label.position = "bottom",
       label.hjust = 0
-      )
-  ) + 
-  xlab("Symptome") + 
-  ylab("Häufigkeit Symptome [%]") 
+    )
+  ) +
+  xlab("Symptome") +
+  ylab("Häufigkeit Symptome [%]")
 
 fSaveImages("11_Symptoms", res11_Symptoms$p, h = 3.5)
-
-

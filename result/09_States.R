@@ -1,5 +1,4 @@
 res09_States <- list()
-
 myFactor <- "state"
 res09_States$names <- c(
   "Bgld." = "Burgenland",
@@ -18,18 +17,9 @@ dfData <- dfData %>%
     state = as.factor(state) %>% fct_relevel(res09_States$names)
   )
 
-res09_States$result <- fGlm(dfData, myFactor)
-res09_States$global <- fGlm(dfData, "global")
-
-res09_States$labels <- res09_States$result %>%
-  group_by(year) %>%
-  summarise(
-    n = sum(n),
-    n = paste0(year[[1]], " (n=", n, ")")
-  ) %>%
-  pull(n)
-names(res09_States$labels) <- unique(res09_States$result$year)
-res09_States$labels <- as_labeller(res09_States$labels)
+res09_States$result <- fGlmNullModel(dfData, myFactor)
+res09_States$global <- fGlmNullModel(dfData, "global")
+res09_States$labels <- fLabeller(res09_States$result)
 
 # Table Count States ------------------------------------------------------------------
 
@@ -168,8 +158,7 @@ res09_States$p <- res09_States$result %>%
   ) +
   scale_x_discrete(labels = names(res09_States$names))
 
-fSaveImages("09_States", res09_States$p, h = 8)
-
+fSaveImages("09_States", res09_States$p, h = 10)
 # States Map --------------------------------------------------------------
 
 res09_States$result_map <- res09_States$result %>%

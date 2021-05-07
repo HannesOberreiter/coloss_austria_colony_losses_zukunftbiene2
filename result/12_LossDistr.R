@@ -30,15 +30,7 @@ res12_LossDistr$result <- dfData %>%
     .groups = "drop"
   )
 
-res12_LossDistr$labels <- res12_LossDistr$result %>%
-  group_by(year) %>%
-  summarise(
-    n = sum(nBeek_continous),
-    n = paste0(year[[1]], " (n=", n, ")")
-  ) %>%
-  pull(n)
-names(res12_LossDistr$labels) <- unique(res12_LossDistr$result$year)
-res12_LossDistr$labels <- as_labeller(res12_LossDistr$labels)
+res12_LossDistr$labels <- fLabeller(res12_LossDistr$result, nBeek_continous)
 
 res12_LossDistr$p <- res12_LossDistr$result %>%
   ggplot(
@@ -71,4 +63,4 @@ res12_LossDistr$p <- res12_LossDistr$result %>%
   xlab("Verlust/Imkerei [%]") +
   ylab("Betroffene Imkereien [%]")
 
-fSaveImages("12_LossDistr", res12_LossDistr$p, h = 8)
+fSaveImages("12_LossDistr", res12_LossDistr$p, h = 10)

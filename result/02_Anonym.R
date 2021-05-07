@@ -1,5 +1,4 @@
 res02_Anon <- list()
-
 myFactor <- "anon"
 
 dfData <- dfData %>%
@@ -8,12 +7,13 @@ dfData <- dfData %>%
     anon = as.factor(anon)
   )
 
-res02_Anon$result <- fGlm(dfData, myFactor)
+res02_Anon$result <- fGlmNullModel(dfData, myFactor)
 res02_Anon$chi <- fChistar(res02_Anon$result, myFactor)
+
 res02_Anon$p <- fPlot(res02_Anon$result, res02_Anon$chi, myFactor)
 
 fSaveImages("02_Anonym", res02_Anon$p)
 
-caption <- "Comparison of estimated expenses and the expenses given by participants in the survey. All values are in Euro."
+caption <- "Höhe der Winterverluste in Prozent ($\\pm$95\\%CI) und Anzahl der Antworten anonymer TeilnehmerInnen und nicht-anonymer Teilnehmer-Innen über die Umfragejahre 2017/18 - 2020/21"
 
 fSaveTable("02_Anonym", res02_Anon$result, caption, myFactor, "u:02anonym")

@@ -57,11 +57,20 @@ fGlmNullModel <- function(df, f) {
                 upper   = resCI[2]
             )
         }
-        yearRes[[i]] <- dplyr::bind_rows(farRes)
-        yearRes[[i]] <- yearRes[[i]] %>%
-            mutate(
-                chistar = any(outer(lower, upper, ">"))
-            )
+        farResAll <- dplyr::bind_rows(farRes)
+        # Generate Matrix of possible non CI Overlaps
+        chiMatrix <- outer(farResAll$lower, farResAll$upper, ">")
+        # https://stackoverflow.com/questions/9505849/r-how-to-get-row-and-column-names-of-the-true-elements-of-a-matrix
+        # Transform Matrix into Vector of Strings
+        rownames(chiMatrix) <- unique(farResAll %>% pull({{myvar}}))
+        colnames(chiMatrix) <- unique(farResAll %>% pull({{myvar}}))
+        chiMatrix <- t(t(apply(chiMatrix, 1, function(u) paste(names(which(u)), collapse = ","))))
+        farResAll$chistar <- as.vector(chiMatrix)
+        yearRes[[i]] <- farResAll
+        # yearRes[[i]] <- yearRes[[i]] %>%
+        #    mutate(
+        #        chistar = any(outer(lower, upper, ">"))
+        #    )
     }
     result <- result %>%
         left_join(bind_rows(yearRes), by = c("year", as.character(myvar)))

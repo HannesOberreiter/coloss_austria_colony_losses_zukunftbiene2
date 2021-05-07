@@ -1,4 +1,4 @@
-fPlot <- function(x, chi, f) {
+fPlot <- function(x, chi, f, xTitle = "") {
   myvar <- rlang::sym(f)
 
   # Facet ~ Labels
@@ -17,7 +17,7 @@ fPlot <- function(x, chi, f) {
     geom_hline(yintercept = 0, color = "black", size = 1) +
     scale_colour_manual(values = colorBlindBlack8[-1], aesthetics = "color", guide = FALSE) +
     ylab("Verlustrate [%]") +
-    xlab("") +
+    xlab(xTitle) +
     geom_text(
       aes(
         y = 0.5,
