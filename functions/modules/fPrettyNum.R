@@ -1,7 +1,3 @@
-fPrettyNum <- function(x){
-  prettyNum(
-    sprintf("%.1f", x), 
-    big.mark = ".", decimal.mark = ",", drop0trailing = F, 
-    format = "d"
-  )
+fPrettyNum <- function(x, afterComma = 1) {
+  format(x, nsmall = afterComma, digits = afterComma, dec = ",", big.mark = ".", trim = T)
 }

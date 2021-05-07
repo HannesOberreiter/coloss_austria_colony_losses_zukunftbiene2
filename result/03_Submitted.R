@@ -1,17 +1,17 @@
 res03_Submitted <- list()
+myFactor <- "submitted"
 
-myFactor <- "submitted" 
-
-dfData <- dfData %>% 
+dfData <- dfData %>%
   mutate(
     submitted = as.factor(submitted)
   )
 
-res03_Submitted$result <- fGlm(dfData, myFactor)
-res03_Submitted$chi    <- fChistar(res03_Submitted$result, myFactor, "Internet", "Zeitung")
-res03_Submitted$p      <- fPlot(res03_Submitted$result, res03_Submitted$chi, myFactor)
+res03_Submitted$result <- fGlmNullModel(dfData, myFactor)
+res03_Submitted$chi <- fChistar(res03_Submitted$result, myFactor)
+res03_Submitted$p <- fPlot(res03_Submitted$result, res03_Submitted$chi, myFactor)
 fSaveImages("03_Submitted", res03_Submitted$p)
 
-caption <- "Comparison of estimated expenses and the expenses given by participants in the survey. All values are in Euro."
+caption <- "Höhe der Winterverluste in Prozent ($\\pm$95\\%CI) und Anzahl der Antworten der unterschiedlichen Teilnehmearten (Online, Papier, Zeitung) über die Umfragejahre 2017/18 - 2020/21"
+
 
 fSaveTable("03_Submitted", res03_Submitted$result, caption, myFactor, "u:03submitted")

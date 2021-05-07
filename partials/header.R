@@ -2,11 +2,10 @@
 # Loading Data and Cleanup
 # Cleanup and Loss Rate Calculation
 # Adding of Cols for Treatments etc.
-
 print("Loading Setup")
 
 # Load Data --------------------------------------------------------------
-files       <- c("17_18", "18_19", "19_20")
+files       <- c("17_18", "18_19", "19_20", "20_21")
 dfData      <- vector("list", length(files))
 
 for (i in seq_along(files)) {
@@ -255,5 +254,11 @@ dfData <- dfData %>%
     c_desc_od_lump  = forcats::fct_lump_min(c_desc_od, 10)
   ) %>%
   ungroup()
+
+# Global Helper for GLM ---------------------------------------------------
+dfData <- dfData %>% 
+  mutate(
+    global = as.factor(1)
+  )
 
 print("Setup Loaded")
