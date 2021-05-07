@@ -19,7 +19,7 @@ fSaveTable <- function(filename = filename, data = x, caption = caption, myFacto
       col.names = c("", "Imkereien [\\textit{n}]", "[\\%]", "Verlustrate [\\%]", "95\\% CI [\\%]"),
       align = c("l", rep("r", 4))
     ) %>%
-    kable_styling(latex_options = "HOLD_position")
+    kable_styling(latex_options = "HOLD_position", font_size = 10)
 
   begin <- 1
   for (i in unique(data$year)) {
