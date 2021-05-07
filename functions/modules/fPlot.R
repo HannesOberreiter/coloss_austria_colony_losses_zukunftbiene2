@@ -1,29 +1,21 @@
-fPlot <- function(x, chi, f){
+fPlot <- function(x, chi, f) {
   myvar <- rlang::sym(f)
 
-  # Facet ~ Labels 
+  # Facet ~ Labels
   # year (n=participants)
-  labels <- x %>%
-    group_by(year) %>%
-    summarise(
-      n = sum(n),
-      n = paste0(year[[1]], " (n=", n, ")")
-    ) %>% 
-    pull(n)
-  names(labels) <- unique(x$year)
-  labels <- ggplot2::as_labeller(labels)
+  labels <- fLabeller(x)
 
   p <- x %>%
-    ggplot(aes(x = {{myvar}}, y = middle, color = year)) +
+    ggplot(aes(x = {{ myvar }}, y = middle, color = year)) +
     geom_crossbar(
-      aes( ymin = lower, ymax = upper ), 
+      aes(ymin = lower, ymax = upper),
       fill = "white"
     ) +
     geom_point(
       size = 3
     ) +
     geom_hline(yintercept = 0, color = "black", size = 1) +
-    scale_colour_manual(values = colorBlindBlack8[-1], aesthetics = "color", guide = FALSE) + 
+    scale_colour_manual(values = colorBlindBlack8[-1], aesthetics = "color", guide = FALSE) +
     ylab("Verlustrate [%]") +
     xlab("") +
     geom_text(
@@ -36,22 +28,22 @@ fPlot <- function(x, chi, f){
       size = 3
     ) +
     scale_y_continuous(
-      limits = c(0, max(x$upper)+5),
+      limits = c(0, max(x$upper) + 5),
       expand = expansion(mult = c(0, 0.1))
     ) +
     facet_wrap(
-      ~ year, 
+      ~year,
       ncol = 2,
       labeller = labels
-      )
+    )
 
   if (nrow(chi) > 0) {
-    p <- p + 
+    p <- p +
       geom_signif(
-        data=chi, 
-        aes(xmin=start, xmax=end, annotations=label, y_position=y), 
-        textsize = 8, manual=TRUE, vjust = 0.5
-        )
+        data = chi,
+        aes(xmin = start, xmax = end, annotations = label, y_position = y),
+        textsize = 8, manual = TRUE, vjust = 0.5
+      )
   }
   return(p)
 }
