@@ -1,9 +1,23 @@
-fPlot <- function(x, chi, f, xTitle = "") {
+fPlot <- function(x, chi, f, xTitle = "", dropNoAnswer = FALSE) {
   myvar <- rlang::sym(f)
 
   # Facet ~ Labels
   # year (n=participants)
   labels <- fLabeller(x)
+
+  if (dropNoAnswer) {
+    x <- x %>%
+      filter(
+        !(!!myvar %in% c("keine Angaben", "Unsicher"))
+      )
+    if (nrow(chi) > 0) {
+      chi <- chi %>%
+        filter(
+          !(start %in% c("keine Angaben", "Unsicher")) &
+            !(end %in% c("keine Angaben", "Unsicher"))
+        )
+    }
+  }
 
   p <- x %>%
     ggplot(aes(x = {{ myvar }}, y = middle, color = year)) +

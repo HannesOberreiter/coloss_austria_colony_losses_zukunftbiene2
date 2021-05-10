@@ -45,7 +45,7 @@ theme_set(
     plot.title = element_text(hjust = 0),
     axis.title.y = element_text(colour = "black", size = 11, angle = 90, vjust = 2),
     axis.text.y = element_text(angle = 0, size = 11),
-    axis.title.x = element_text(colour = "black"),
+    axis.title.x = element_text(colour = "black", margin = margin(t = 10, r = 0, b = 0, l = 0)),
     axis.text.x = element_text(angle = 0, hjust = 0.5, size = 11, face = "bold"),
     axis.line.y = element_line(linetype = "solid", size = 0.5),
     panel.grid.major.y = element_line(colour = "grey"),

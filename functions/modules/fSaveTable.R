@@ -1,9 +1,10 @@
-fSaveTable <- function(filename = filename, data = x, caption = caption, myFactor = f, latexLabel = l) {
+fSaveTable <- function(filename = filename, data = x, caption = caption, myFactor = f, latexLabel = l, firstCol = "") {
   myvar <- sym(myFactor)
   tab <- data %>%
     mutate(
       n = fPrettyNum(n, 0),
       np = fPrettyNum(np),
+      middle = fPrettyNum(middle),
       ci = paste0("(", fPrettyNum(lower), " - ", fPrettyNum(upper), ")")
     ) %>%
     select(
@@ -16,7 +17,7 @@ fSaveTable <- function(filename = filename, data = x, caption = caption, myFacto
       booktabs = T,
       escape = F,
       linesep = "", # https://stackoverflow.com/questions/45409750/get-rid-of-addlinespace-in-kable
-      col.names = c("", "Imkereien [\\textit{n}]", "[\\%]", "Verlustrate [\\%]", "95\\% CI [\\%]"),
+      col.names = c(firstCol, "Imkereien [\\textit{n}]", "[\\%]", "Verlustrate [\\%]", "95\\% CI [\\%]"),
       align = c("l", rep("r", 4))
     ) %>%
     kable_styling(latex_options = "HOLD_position", font_size = 10)
