@@ -1,4 +1,4 @@
-fPlot <- function(x, chi, f, xTitle = "", dropNoAnswer = FALSE) {
+fPlot <- function(x, chi, f, xTitle = "", dropNoAnswer = FALSE, facet_scales = "fixed", facet_cols = 2) {
   myvar <- rlang::sym(f)
 
   # Facet ~ Labels
@@ -47,8 +47,9 @@ fPlot <- function(x, chi, f, xTitle = "", dropNoAnswer = FALSE) {
     ) +
     facet_wrap(
       ~year,
-      ncol = 2,
-      labeller = labels
+      ncol = facet_cols,
+      labeller = labels,
+      scales = facet_scales
     )
 
   if (nrow(chi) > 0) {
