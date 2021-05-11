@@ -61,6 +61,6 @@ res12_LossDistr$p <- res12_LossDistr$result %>%
     labeller = res12_LossDistr$labels
   ) +
   xlab("Verlust/Imkerei [%]") +
-  ylab("Betroffene Imkereien [%]")
+  ylab("Betroffene Imkereien [n]")
 
 fSaveImages("12_LossDistr", res12_LossDistr$p, h = 10)
