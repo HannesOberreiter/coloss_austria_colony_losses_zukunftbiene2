@@ -8,7 +8,7 @@ libs <- c(
   "glue", "patchwork", "rlang",
   "boot", "ggsignif", "knitr",
   "kableExtra", "lintr", "skimr",
-  "sf"
+  "sf", "scales"
 )
 
 # sf library needs to be loaded directly and not from cache
@@ -60,6 +60,34 @@ colorBlindBlack8 <- c(
   "#464343", "#E69F00", "#56B4E9", "#009E73",
   "#CC79A7", "#F0E442", "#0072B2", "#D55E00"
 )
+
+# Months in Questionnaire Treatment
+treatmentMonths <- list()
+treatmentMonths[["names"]] <- c(
+  "April", "Mai", "Juni", "Juli",
+  "August", "September", "Oktober", "November",
+  "Dezember", "Jänner", "Februar", "März"
+)
+treatmentMonths[["short"]] <- c(
+  "April", "Mai", "Juni", "Juli",
+  "Aug.", "Sept.", "Okt.", "Nov.",
+  "Dez.", "Jan.", "Feb.", "März"
+)
+treatmentMonths[["color"]] <- c(
+  rep(colorBlindBlack8[[7]], 2),
+  rep(colorBlindBlack8[[8]], 5),
+  rep(colorBlindBlack8[[1]], 3),
+  rep(colorBlindBlack8[[6]], 2)
+)
+treatmentMonths[["groups"]] <- c(
+  rep("Frühjahr", 2),
+  rep("Sommer", 5),
+  rep("Winter", 3),
+  rep("Frühjahr (nächstes Jahr)", 2)
+) %>%
+  fct_relevel(
+    c("Frühjahr", "Sommer", "Winter", "Frühjahr (nächstes Jahr)")
+  )
 
 # Generate List -----------------------------------------------------------
 # This file contains our treatment list ~ names of treatment methods,
