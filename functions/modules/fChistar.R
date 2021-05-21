@@ -5,7 +5,8 @@
 # above the connected significant line
 fChistar <- function(df = x,
                      myFactor = f,
-                     myLabel = "*") {
+                     myLabel = "*",
+                     dropNoAnswer = FALSE) {
   myVar <- sym(myFactor)
   # return empty if nothing is significant
   if (length(str_c(df$chistar, "")) == 0) {
@@ -13,25 +14,45 @@ fChistar <- function(df = x,
     return(df)
   }
   resChi <- list()
+
+  if (dropNoAnswer) {
+    df <- df %>%
+      filter(
+        !(!!myVar %in% c("keine Angaben", "Unsicher", "keine\nAngaben"))
+      ) %>%
+      mutate(
+        chi = chistar %>% str_remove("keine Angaben") %>% str_remove("Unsicher") %>% str_remove("keine\nAngaben")
+      )
+  }
+
   for (i in unique(df$year)) {
     dfYear <- df %>% filter(year == i)
     resYear <- list()
-    for (j in 1:nrow(dfYear)) {
+    yMax <- max(dfYear$upper)
+    for (j in seq_len(nrow(dfYear))) {
       curRow <- dfYear[j, ]
       if (curRow$chistar == "") next()
       endVector <- curRow %>%
         pull(chistar) %>%
         str_split(",", simplify = T) %>%
+        # safety as we could remove some rows if dropNoAnswer is True
+        stringi:::stri_remove_empty() %>%
         as.vector()
+      if (length(endVector) == 1) {
+        yMax <- last(yMax) + 4
+      } else {
+        yMax <- last(yMax) + seq(4, length(endVector) * 4, 4)
+      }
       resYear[[j]] <- tibble(
         year = i,
         start = curRow %>% pull({{ myVar }}),
         end = endVector,
-        y = curRow[["upper"]] + seq(2, 10, 2)[1:length(endVector)],
+        y = yMax,
         label = myLabel
       )
     }
     resChi[[i]] <- dplyr::bind_rows(resYear)
   }
+
   return(dplyr::bind_rows(resChi))
 }

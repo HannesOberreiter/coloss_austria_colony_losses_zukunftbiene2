@@ -14,6 +14,6 @@ res02_Anon$p <- fPlot(res02_Anon$result, res02_Anon$chi, myFactor)
 
 fSaveImages("02_Anonym", res02_Anon$p)
 
-caption <- "Höhe der Winterverluste in Prozent ($\\pm$95\\%CI) und Anzahl der Antworten anonymer TeilnehmerInnen und nicht-anonymer Teilnehmer-Innen über die Umfragejahre 2017/18 - 2020/21"
+caption <- "Höhe der Winterverluste in Prozent ($\\pm$95\\%CI) und Anzahl der Antworten anonymer TeilnehmerInnen und nicht-anonymer TeilnehmerInnen über die Umfragejahre 2017/18 - 2020/21"
 
 fSaveTable("02_Anonym", res02_Anon$result, caption, myFactor, "u:02anonym")

@@ -50,7 +50,7 @@ for (flow in flows) {
         theme(
             legend.position = "bottom",
             axis.line.y = element_blank(),
-            axis.texåt.x = element_blank(),
+            axis.text.x = element_blank(),
             axis.text.y = element_blank(),
             axis.ticks = element_blank()
         ) +

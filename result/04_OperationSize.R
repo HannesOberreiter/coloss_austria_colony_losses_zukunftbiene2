@@ -97,4 +97,4 @@ res04_OperationSize$p2 <- res04_OperationSize$result %>%
   xlab("Völker / Imkerei") +
   ylab("Bienenvölker [%]")
 
-fSaveImages("04_OperationSize", res04_OperationSize$p1 / res04_OperationSize$p2)
+fSaveImages("04_OperationSize", res04_OperationSize$p1 / res04_OperationSize$p2 + patchwork::plot_annotation(tag_levels = "A"))
