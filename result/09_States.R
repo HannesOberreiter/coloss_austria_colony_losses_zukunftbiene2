@@ -74,7 +74,7 @@ tab <- res09_States$all %>%
   kable(
     "latex",
     caption = "",
-    label = "",
+    label = "tab:u:09states",
     booktabs = T,
     escape = F,
     col.names = c(
@@ -98,11 +98,27 @@ for (i in unique(res09_States$all$year)) {
   begin <- end + 1
 }
 
+# small bugfix as pack_rows introduces an linespaceing which breaks midrule
+tab <- sub("midrule{}", "midrule", tab, fixed = T)
+
 tab %>% save_kable(paste0("output/tables/09_States.tex"))
 
 rm(tab, begin, end, i)
 
 # States Boxplot ----------------------------------------------------------
+
+res09_States$result <- res09_States$result %>%
+  mutate(
+    label = ifelse(
+      chistar == "",
+      "",
+      paste0("*", chistar) %>%
+        stringr::str_replace_all(tempNames) %>%
+        # https://stackoverflow.com/questions/31761627/how-to-replace-nth-character-of-a-string-in-a-column-in-r
+        stringr::str_replace("^((?:.*?,){2}.*?)((?:.*?,){2}.*?),", "\\1\n\\2\n")
+    )
+  )
+
 res09_States$p <- res09_States$result %>%
   ggplot(aes(x = state, y = middle, color = year)) +
   # Austria
@@ -147,7 +163,7 @@ res09_States$p <- res09_States$result %>%
     size = 3
   ) +
   scale_y_continuous(
-    limits = c(0, max(res09_States$result$upper) + 5),
+    limits = c(0, max(res09_States$result$upper) + 3),
     expand = expansion(mult = c(0, 0.1))
   ) +
   facet_wrap(
@@ -158,7 +174,17 @@ res09_States$p <- res09_States$result %>%
   ) +
   scale_x_discrete(labels = names(res09_States$names))
 
-fSaveImages("09_States", res09_States$p, h = 10)
+res09_States$p2 <- res09_States$p +
+  coord_cartesian(clip = "off") +
+  geom_text(
+    aes(y = upper, label = label),
+    size = 2.5,
+    vjust = 0,
+    nudge_y = 1
+  )
+
+
+fSaveImages("09_States", res09_States$p2, h = 10)
 # States Map --------------------------------------------------------------
 
 res09_States$result_map <- res09_States$result %>%

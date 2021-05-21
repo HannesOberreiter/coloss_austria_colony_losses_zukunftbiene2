@@ -2,6 +2,7 @@
 # f = string of factor
 # returns tibble
 fGlm <- function(df, f) {
+  message(glue::glue("fGlm on {f}"))
   myvar <- sym(f) # convert string to symbol to use it with rlang
   # create count table
   result <- df %>%
