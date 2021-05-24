@@ -33,7 +33,7 @@ for (OP in OPs) {
         ) %>%
         arrange(year, !!sym(OP))
 
-    res15_OP$chi[[OP]] <- fChistar(res15_OP$result[[OP]], myFactor)
+    res15_OP$chi[[OP]] <- fChistar(res15_OP$result[[OP]], myFactor, dropNoAnswer = TRUE)
     res15_OP$p[[OP]] <- fPlot(res15_OP$result[[OP]], res15_OP$chi[[OP]], myFactor, xTitle = "", dropNoAnswer = TRUE)
 
     caption <- glue::glue("Höhe der Winterverluste in Prozent ($\\pm$95\\%CI) und Anzahl 0000000 (eingewinerte Bienenvölker) über die Umfragejahre 2017/18 - 2020/21.")
