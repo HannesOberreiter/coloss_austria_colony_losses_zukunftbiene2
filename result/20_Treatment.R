@@ -61,9 +61,9 @@ for (treatment in treatmentList$tsingle[-1]) {
                 !!sym(tSummer) == 1 & (!!sym(tSpring) + !!sym(tWinter)) == 0 ~ tLevels[[2]],
                 !!sym(tWinter) == 1 & (!!sym(tSummer) + !!sym(tSpring)) == 0 ~ tLevels[[3]],
                 # Combinations of Seasons
-                !!sym(tSpring) == 0 & (!!sym(tSummer) + !!sym(tWinter)) == 2 ~ tLevels[[4]],
-                !!sym(tSummer) == 0 & (!!sym(tSpring) + !!sym(tWinter)) == 2 ~ tLevels[[5]],
-                !!sym(tWinter) == 0 & (!!sym(tSummer) + !!sym(tSpring)) == 2 ~ tLevels[[6]],
+                !!sym(tWinter) == 0 & (!!sym(tSummer) + !!sym(tSpring)) == 2 ~ tLevels[[4]],
+                !!sym(tSpring) == 0 & (!!sym(tSummer) + !!sym(tWinter)) == 2 ~ tLevels[[5]],
+                !!sym(tSummer) == 0 & (!!sym(tWinter) + !!sym(tSpring)) == 2 ~ tLevels[[6]],
                 # All three Seasons
                 (!!sym(tWinter) + !!sym(tSummer) + !!sym(tSpring)) == 3 ~ tLevels[[7]],
                 # No Treatment
