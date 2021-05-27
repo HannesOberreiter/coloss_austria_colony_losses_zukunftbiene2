@@ -42,7 +42,7 @@ theme_set(
     panel.spacing = unit(1, "lines"),
     strip.text.x = element_text(size = 11),
     strip.placement = "outside",
-    plot.title = element_text(hjust = 0),
+    plot.title = element_text(hjust = 0.5, face = "bold", margin = margin(b = 1)),
     axis.title.y = element_text(colour = "black", size = 11, angle = 90, vjust = 2),
     axis.text.y = element_text(angle = 0, size = 11),
     axis.title.x = element_text(colour = "black", margin = margin(t = 10, r = 0, b = 0, l = 0)),

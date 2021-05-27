@@ -1,4 +1,4 @@
-fPlot <- function(x, chi, f, xTitle = "", dropNoAnswer = FALSE, facet_scales = "fixed", facet_cols = 2, yMax = FALSE, fillCross = FALSE, yTitle = "Verlustrate [%]", yOffset = 2) {
+fPlot <- function(x, chi, f, xTitle = "", dropNoAnswer = FALSE, facet_scales = "fixed", facet_cols = 2, yMax = FALSE, fillCross = FALSE, yTitle = "Verlustrate [%]", yOffset = 2, text = "") {
   myvar <- rlang::sym(f)
 
   # Facet ~ Labels
@@ -37,6 +37,7 @@ fPlot <- function(x, chi, f, xTitle = "", dropNoAnswer = FALSE, facet_scales = "
     scale_colour_manual(values = colorBlindBlack8[-1], aesthetics = "color", guide = FALSE) +
     ylab(yTitle) +
     xlab(xTitle) +
+    labs(title = text) +
     geom_text(
       aes(
         y = 0.8,
