@@ -110,8 +110,6 @@ rm(tab, begin, end, i)
 tempNames <- names(res09_States$names)
 names(tempNames) <- res09_States$names
 
-tempNames
-
 res09_States$result <- res09_States$result %>%
   mutate(
     label = ifelse(
