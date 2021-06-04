@@ -107,3 +107,37 @@ dfData %>%
   ) +
   scale_y_continuous(limits = c(0, 75)) +
   facet_wrap(~operational)
+
+
+
+# Hives Apiaries ------
+
+d <- dfData %>%
+  mutate(
+    ratio = hives_winter / apiaries
+  ) %>%
+  filter(ratio <= 1 & hives_winter > 2) %>%
+  select(id, apiaries, hives_winter)
+
+write.csv2(d, "ratio.csv")
+d
+
+summary(dfData$apiaries)
+fit <- lm(hives_winter ~ apiaries, dfData)
+s <- summary(fit)
+
+dfData %>%
+  ggplot(aes(x = apiaries, y = hives_winter, shape = year, size = hives_winter, color = year)) +
+  geom_point() +
+  stat_smooth(method = "lm", col = colorBlindBlack8[[2]], aes(group = 1)) +
+  labs(
+    title = paste(
+      "Adj R2 = ", signif(summary(fit)$adj.r.squared, 5),
+      "Intercept =", signif(fit$coef[[1]], 5),
+      "Slope =", signif(fit$coef[[2]], 5),
+      sep = " "
+    )
+  ) +
+  theme_classic()
+
+
