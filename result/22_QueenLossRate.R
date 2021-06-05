@@ -128,3 +128,8 @@ res22_QueenState$result_tab <- res22_QueenState$global %>%
     arrange(year, state)
 
 fSaveTable("22_QueenStateRate", res22_QueenState$result_tab, caption, myFactor, "u:22QueenState")
+
+# Running Mean in Austria ------
+res22_QueenState$global %>%
+    pull(middle) %>%
+    mean()
