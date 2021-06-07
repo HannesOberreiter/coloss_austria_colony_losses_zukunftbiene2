@@ -41,7 +41,7 @@ fChistar <- function(df = x,
       if (length(endVector) == 1) {
         yMax <- last(yMax) + 4
       } else {
-        yMax <- last(yMax) + seq(4, length(endVector) * 4, 4)
+        yMax <- last(yMax) + seq(8, length(endVector) * 8, 8)
       }
       resYear[[j]] <- tibble(
         year = i,
