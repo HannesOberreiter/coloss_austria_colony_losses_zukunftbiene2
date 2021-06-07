@@ -28,13 +28,15 @@ res23_QueenProblems$resultQueenLoss <- fGlmNullModel(tempDataQueenLoss, myFactor
 res23_QueenProblems$chiQueenLoss <- fChistar(res23_QueenProblems$resultQueenLoss, myFactor) %>%
     mutate(
         # offset Playing as Queens Loss Rate is a lot lower
-        y = 4 + y - (y * 0.6)
+        # y = 4 + y - (y * 0.6)
     )
 res23_QueenProblems$pQueenLoss <- fPlot(
     res23_QueenProblems$resultQueenLoss,
     res23_QueenProblems$chiQueenLoss,
     myFactor,
-    yTitle = "Verlustrate nur mit Verluste durch Königinnen Probleme [%]", yOffset = 1
+    yTitle = "Verlustrate nur mit Verluste durch Königinnen Probleme [%]",
+    allData = TRUE,
+    raw = tempDataQueenLoss
 )
 fSaveImages("23_QueenProblems_QueenLoss", res23_QueenProblems$pQueenLoss, w = 8.5)
 caption <- "Höhe der Winterverluste (nur Verluste durch unlösbare Königinnenprobleme) in Prozent ($\\pm$95\\%CI) und Anzahl der Antworten im Zusammenhang mit den beobachteten Königinnenproblemen über die Umfragejahre 2017/18 - 2020/21."
@@ -53,7 +55,9 @@ res23_QueenProblems$pNormalLoss <- fPlot(
     res23_QueenProblems$resultNormalLoss,
     res23_QueenProblems$chiNormalLoss,
     myFactor,
-    yTitle = "Verlustrate ohne Verluste durch Königinnen Probleme [%]", yOffset = 1
+    yTitle = "Verlustrate ohne Verluste durch Königinnen Probleme [%]",
+    allData = TRUE,
+    raw = tempDataNormalLoss
 )
 fSaveImages("23_QueenProblems_NormalLoss", res23_QueenProblems$pNormalLoss, w = 8.5)
 res23_QueenProblems$pNormalLoss

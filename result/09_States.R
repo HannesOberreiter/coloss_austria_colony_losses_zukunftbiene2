@@ -74,7 +74,7 @@ tab <- res09_States$all %>%
   kable(
     "latex",
     caption = "",
-    label = "tab:u:09states",
+    label = "u:09states",
     booktabs = T,
     escape = F,
     col.names = c(

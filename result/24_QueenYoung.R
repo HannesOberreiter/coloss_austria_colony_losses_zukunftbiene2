@@ -69,13 +69,15 @@ res24_QueenYoung$resultQueenLoss <- fGlmNullModel(tempDataQueenLoss, myFactor)
 res24_QueenYoung$chiQueenLoss <- fChistar(res24_QueenYoung$resultQueenLoss, myFactor) %>%
     mutate(
         # offset Playing as Queens Loss Rate is a lot lower
-        y = 4 + y - (y * 0.6)
+        # y = 4 + y - (y * 0.6)
     )
 res24_QueenYoung$pQueenLoss <- fPlot(
     res24_QueenYoung$resultQueenLoss,
     res24_QueenYoung$chiQueenLoss,
     myFactor,
-    yTitle = "Verlustrate nur mit Verluste durch Königinnen Probleme [%]", yOffset = 1
+    yTitle = "Verlustrate nur mit Verluste durch Königinnen Probleme [%]",
+    allData = TRUE,
+    raw = tempDataQueenLoss
 )
 fSaveImages("24_QueenYoung_QueenLoss", res24_QueenYoung$pQueenLoss, w = 8.5)
 caption <- "Höhe der Winterverluste (nur Verluste durch unlösbare Königinnenprobleme) in Prozent ($\\pm$95\\%CI) und Anzahl der Antworten in Abhängigkeit vom Prozentsatz junger Königinnen pro Imkerei über die Umfragejahre 2017/18 - 2020/21."
@@ -97,11 +99,18 @@ tempDataNormalLoss <- tempData %>%
     )
 res24_QueenYoung$resultNormalLoss <- fGlmNullModel(tempDataNormalLoss, myFactor)
 res24_QueenYoung$chiNormalLoss <- fChistar(res24_QueenYoung$resultNormalLoss, myFactor)
+
+# Manually setting some sign bars to keep me sane
+res24_QueenYoung$chiNormalLoss$y[3] <- 45
+res24_QueenYoung$chiNormalLoss$y[7] <- 20
+
 res24_QueenYoung$pNormalLoss <- fPlot(
     res24_QueenYoung$resultNormalLoss,
     res24_QueenYoung$chiNormalLoss,
     myFactor,
-    yTitle = "Verlustrate ohne Verluste durch Königinnen Probleme [%]", yOffset = 1
+    yTitle = "Verlustrate ohne Verluste durch Königinnen Probleme [%]",
+    allData = TRUE,
+    raw = tempDataNormalLoss
 )
 fSaveImages("24_QueenYoung_NormalLoss", res24_QueenYoung$pNormalLoss, w = 8.5)
 caption <- "Höhe der Winterverluste (exklusive den Verlusten durch unlösbare Königinnenprobleme.) in Prozent ($\\pm$95\\%CI) und Anzahl der Antworten in Abhängigkeit vom Prozentsatz junger Königinnen pro Imkerei über die Umfragejahre 2017/18 - 2020/21."

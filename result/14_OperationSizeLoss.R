@@ -18,7 +18,14 @@ res14_OperationSizeLoss$result <- fGlmNullModel(dfData, myFactor) %>%
 
 res14_OperationSizeLoss$chi <- fChistar(res14_OperationSizeLoss$result, myFactor)
 
-res14_OperationSizeLoss$p <- fPlot(res14_OperationSizeLoss$result, res14_OperationSizeLoss$chi, myFactor, xTitle = "Völker / Imkerei")
+res14_OperationSizeLoss$p <- fPlot(
+  res14_OperationSizeLoss$result,
+  res14_OperationSizeLoss$chi,
+  myFactor,
+  xTitle = "Völker / Imkerei",
+  allData = TRUE,
+  raw = dfData
+)
 
 fSaveImages("14_OperationSizeLoss", res14_OperationSizeLoss$p, w = 8.5)
 

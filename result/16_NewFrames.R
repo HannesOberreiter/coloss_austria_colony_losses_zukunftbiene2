@@ -15,7 +15,15 @@ res16_NewFrames$result <- fGlmNullModel(dfData, myFactor) %>%
 
 res16_NewFrames$chi <- fChistar(res16_NewFrames$result, myFactor)
 
-res16_NewFrames$p <- fPlot(res16_NewFrames$result, res16_NewFrames$chi, myFactor, xTitle = "Anteil der im Einwinterungsjahr erneuerten Brutwaben [%]", dropNoAnswer = TRUE)
+res16_NewFrames$p <- fPlot(
+  res16_NewFrames$result,
+  res16_NewFrames$chi,
+  myFactor,
+  xTitle = "Anteil der im Einwinterungsjahr erneuerten Brutwaben [%]",
+  dropNoAnswer = TRUE,
+  allData = TRUE,
+  raw = dfData %>% filter(!!sym(myFactor) != "keine Angaben")
+)
 
 fSaveImages("16_NewFrames", res16_NewFrames$p, w = 8.5)
 

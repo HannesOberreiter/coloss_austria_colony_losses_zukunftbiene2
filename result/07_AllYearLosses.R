@@ -24,10 +24,22 @@ res07_allYearLosses$data <- tibble::tribble(
   "2019/20", 12.6, 11.9, 13.3, 1539, 30724,
   "2020/21", 12.6, 11.9, 13.4, 1401, 29453,
 )
+
+res07_allYearLosses$data %>%
+  tail(4) %>%
+  summarise(mean(n))
+mean(res07_allYearLosses$data$ncolonies)
+
 # Project years mean
 res07_allYearLosses$data %>%
   tail(4) %>%
   summarise(mean(middle))
+res07_allYearLosses$data %>%
+  tail(4) %>%
+  summarise(mean(n))
+res07_allYearLosses$data %>%
+  tail(4) %>%
+  summarise(mean(ncolonies))
 # Plot Data Helper
 res07_allYearLosses$totalSummary <- c(
   "totalMean"       = mean(res07_allYearLosses$data$middle),

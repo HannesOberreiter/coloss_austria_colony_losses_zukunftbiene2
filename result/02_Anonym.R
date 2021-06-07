@@ -10,7 +10,13 @@ dfData <- dfData %>%
 res02_Anon$result <- fGlmNullModel(dfData, myFactor)
 res02_Anon$chi <- fChistar(res02_Anon$result, myFactor)
 
-res02_Anon$p <- fPlot(res02_Anon$result, res02_Anon$chi, myFactor)
+res02_Anon$p <- fPlot(
+  res02_Anon$result,
+  res02_Anon$chi,
+  myFactor,
+  allData = TRUE,
+  raw = dfData %>% drop_na({{ myFactor }})
+)
 
 fSaveImages("02_Anonym", res02_Anon$p)
 

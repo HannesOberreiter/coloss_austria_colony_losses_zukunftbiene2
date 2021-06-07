@@ -17,14 +17,18 @@ res25_CrippledBees$result <- fGlmNullModel(tempData, myFactor) %>%
 res25_CrippledBees$chi <- fChistar(res25_CrippledBees$result, myFactor, dropNoAnswer = TRUE)
 
 # Hard Coded one sign. bar to keep my sanity :/
+res25_CrippledBees$chi$y[2] <- 55
+res25_CrippledBees$chi$y[3] <- 45
 res25_CrippledBees$chi$y[6] <- 25
+res25_CrippledBees$chi$y[11] <- 50
 
 res25_CrippledBees$p <- fPlot(
     res25_CrippledBees$result,
     res25_CrippledBees$chi,
     myFactor,
     dropNoAnswer = TRUE,
-    yOffset = 0
+    allData = TRUE,
+    raw = tempData %>% filter(!!sym(myFactor) != "keine\nAngaben")
 )
 
 fSaveImages("25_CrippledBees", res25_CrippledBees$p, w = 8.5)

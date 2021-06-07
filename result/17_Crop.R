@@ -28,7 +28,16 @@ for (flow in flows) {
         arrange(year, !!sym(flow))
 
     res17_Crop$chi[[flow]] <- fChistar(res17_Crop$result[[flow]], myFactor)
-    res17_Crop$p[[flow]] <- fPlot(res17_Crop$result[[flow]], res17_Crop$chi[[flow]], myFactor, xTitle = "", dropNoAnswer = TRUE, text = flowsDE[[flow]])
+    res17_Crop$p[[flow]] <- fPlot(
+        res17_Crop$result[[flow]],
+        res17_Crop$chi[[flow]],
+        myFactor,
+        xTitle = "",
+        dropNoAnswer = TRUE,
+        text = flowsDE[[flow]],
+        allData = TRUE,
+        raw = tempData %>% filter(!!sym(flow) %in% c("Ja", "Nein"))
+        )
 
     caption <- glue::glue("Höhe der Winterverluste in Prozent ($\\pm$95\\%CI) und Anzahl 0000000 (eingewinerte Bienenvölker) über die Umfragejahre 2017/18 - 2020/21.")
     fSaveTable(glue::glue("17_Crop_{flow}"), res17_Crop$result[[flow]], caption, myFactor, glue::glue("u:17crop_{flow}"))

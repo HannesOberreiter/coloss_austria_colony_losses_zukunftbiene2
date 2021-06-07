@@ -64,6 +64,13 @@ res08_Population$dPop <- res08_Population$dPop %>%
     labeltop = ifelse(season == "Herbst", value, ""),
   )
 
+# Linear Modell -----
+res08_Population$LM <- res08_Population$dPop %>%
+  filter(season == "Herbst") %>%
+  lm(value ~ idu, data = .)
+res08_Population$LM
+summary(res08_Population$LM)
+
 res08_Population$p <- ggplot(data = res08_Population$dPop) +
   aes(x = idu, y = value) +
   geom_line(aes(group = 1)) +
