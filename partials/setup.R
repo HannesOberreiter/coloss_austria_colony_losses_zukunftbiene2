@@ -8,7 +8,7 @@ libs <- c(
   "glue", "patchwork", "rlang",
   "boot", "ggsignif", "knitr",
   "kableExtra", "lintr", "skimr",
-  "sf", "scales"
+  "sf", "scales", "ggforce"
 )
 
 # sf library needs to be loaded directly and not from cache
