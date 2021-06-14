@@ -20,7 +20,6 @@ res25_CrippledBees$chi <- fChistar(res25_CrippledBees$result, myFactor, dropNoAn
 res25_CrippledBees$chi$y[2] <- 55
 res25_CrippledBees$chi$y[3] <- 45
 res25_CrippledBees$chi$y[6] <- 25
-res25_CrippledBees$chi$y[11] <- 50
 
 res25_CrippledBees$p <- fPlot(
     res25_CrippledBees$result,
