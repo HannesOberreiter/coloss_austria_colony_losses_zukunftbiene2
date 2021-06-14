@@ -23,7 +23,7 @@ res06_Radius$tab <- res06_Radius$data[, -1] %>%
     col.names = c("Alle Völker innerhalb \\SI{15}{\\kilo\\meter} Radius", "Imkereien [\\textit{n}]", "[\\%]"),
     align = c("l", rep("r", 2))
   ) %>%
-  kable_styling(latex_options = "HOLD_position", font_size = 10)
+  kable_styling(latex_options = "HOLD_position", font_size = 8)
 
 begin <- 1
 for (i in unique(res06_Radius$data$year)) {

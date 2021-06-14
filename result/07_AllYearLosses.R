@@ -71,7 +71,8 @@ res07_allYearLosses$p <- res07_allYearLosses$data %>%
   ) +
   geom_crossbar(
     aes(xmin = lowerlim, xmax = upperlim),
-    fill = "white"
+    fill = "white",
+    alpha = 0.8
   ) +
   geom_point(size = 3) +
   geom_text(

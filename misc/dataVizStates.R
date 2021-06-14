@@ -102,7 +102,6 @@ plot <- result %>%
         panel.grid.minor.x = element_line(colour = "lightgrey")
     )
 
-
 map <- result_map %>%
     ggplot() +
     geom_sf(

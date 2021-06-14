@@ -146,6 +146,7 @@ for (treatment in treatmentList$tsingle[-1]) {
             ),
         caption,
         tComb,
-        glue::glue("u:20treatment{treatment}")
+        glue::glue("u:20treatment{treatment}"),
+        fontSize = 6
     )
 }
