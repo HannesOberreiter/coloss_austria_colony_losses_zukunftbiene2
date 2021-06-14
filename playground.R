@@ -141,3 +141,38 @@ dfData %>%
   theme_classic()
 
 
+# Melezitose Weak Overwintered ------
+
+dfData %>%
+  drop_na(weak) %>%
+  group_by(year, flow_melezitose) %>%
+  summarise(
+    p = sum(weak) * 100 / sum(hives_spring_e)
+  )
+
+
+
+# Groups like Economic Paper
+
+dfData <- dfData %>%
+  mutate(
+    operation_size = case_when(
+      between(hives_winter, 1, 10) ~ "1-10",
+      between(hives_winter, 11, 20) ~ "11-20",
+      between(hives_winter, 21, 50) ~ "21-50",
+      between(hives_winter, 51, 100) ~ "51-100",
+      between(hives_winter, 101, 150) ~ "101-150",
+      hives_winter > 150 ~ "> 150"
+    ),
+    operation_size = fct_relevel(operation_size, "> 150", after = Inf)
+  )
+
+unique(dfData$year)
+
+dfData %>%
+  filter(year == "17/18") %>%
+  group_by(operation_size) %>%
+  summarise(
+    n = n(),
+    loss_rate = mean(hives_winter - hives_spring_e)
+  )
