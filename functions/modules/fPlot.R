@@ -167,7 +167,7 @@ fPlot <- function(x, chi, f, xTitle = "", dropNoAnswer = FALSE, facet_scales = "
         y = 100,
         label = glue("n = {n}")
       ),
-      vjust = -0.5,
+      vjust = -0.1,
       color = "black",
       size = 3
     ) +
