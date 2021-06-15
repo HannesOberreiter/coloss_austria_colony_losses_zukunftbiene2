@@ -32,8 +32,10 @@ for (treatment in treatmentList$tsingle[-1]) {
 
     fSaveImages(glue::glue("20_TreatmentDistr_{treatment}"), res20_Treatments$hist[[treatment]]$p, h = 10)
 }
+
 # Combination -----------------------------------------------------------------
 for (treatment in treatmentList$tsingle[-1]) {
+    # for (treatment in treatmentList$tsingle[10]) {
     message(glue::glue("Plot and Table: {treatment}"))
     tComb <- glue::glue("{treatment}comb")
     tSpring <- glue::glue("{treatment}totalyn_spring")
@@ -110,7 +112,7 @@ for (treatment in treatmentList$tsingle[-1]) {
     tExpand <- ifelse(nrow(res20_Treatments$result_comb[[treatment]]) <= 12, 0.07, 0.1)
     tFree <- ifelse(nrow(res20_Treatments$result_comb[[treatment]]) <= 12, "fixed", "free_x")
     tSize <- ifelse(nrow(res20_Treatments$result_comb[[treatment]]) <= 12, 6, 10)
-    
+
     res20_Treatments$chi_comb[[treatment]] <- fChistar(res20_Treatments$result_comb[[treatment]], tComb)
 
     # Special Color if No Treatment
