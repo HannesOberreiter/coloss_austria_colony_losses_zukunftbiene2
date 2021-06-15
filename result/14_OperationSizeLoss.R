@@ -17,7 +17,7 @@ res14_OperationSizeLoss$result <- fGlmNullModel(dfData, myFactor) %>%
   )
 
 res14_OperationSizeLoss$chi <- fChistar(res14_OperationSizeLoss$result, myFactor)
-
+res14_OperationSizeLoss$chi$y[[6]] <- 40
 res14_OperationSizeLoss$p <- fPlot(
   res14_OperationSizeLoss$result,
   res14_OperationSizeLoss$chi,
