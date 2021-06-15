@@ -176,3 +176,58 @@ dfData %>%
     n = n(),
     loss_rate = mean(hives_winter - hives_spring_e)
   )
+
+
+# Fix Thymol Sign Bars
+treatment <- "T_thymol_"
+tComb <- "T_thymol_comb"
+tPlotFilter <- c("Nur\nSommer", "Kein\nThymol", "Sommer\nWinter")
+tSize <- 6
+res20_Treatments$chi_comb$T_thymol_$y[[3]] <- 70
+
+res20_Treatments$p_comb[[treatment]] <- fPlot(
+  res20_Treatments$result_comb[[treatment]],
+  res20_Treatments$chi_comb[[treatment]],
+  tComb,
+  xTitle = "",
+  facet_scales = tFree,
+  facet_cols = tCols,
+  fillCross = TRUE,
+  expandMax = tExpand,
+  allData = TRUE,
+  raw = res20_Treatments$combination[[treatment]] %>%
+    filter(
+      !!sym(tComb) %in% tPlotFilter
+    )
+)
+
+fSaveImages(glue::glue("20_Comb{treatment}"), res20_Treatments$p_comb[[treatment]], h = tSize)
+
+
+# Fix Ox Mix Sign Bars
+treatment <- "T_oxalic_trickle_mix_"
+tComb <- "T_oxalic_trickle_mix_comb"
+tPlotFilter <- c("Nur\nSommer", "Nur\nWinter", "Sommer\nWinter", "Keine\nOx-Mix")
+tSize <- 10
+tCols <- 1
+tExpand <- 0.1
+tFree <- "free_x"
+res20_Treatments$chi_comb$T_oxalic_trickle_mix_$y[[3]] <- 60
+
+res20_Treatments$p_comb[[treatment]] <- fPlot(
+  res20_Treatments$result_comb[[treatment]],
+  res20_Treatments$chi_comb[[treatment]],
+  tComb,
+  xTitle = "",
+  facet_scales = tFree,
+  facet_cols = tCols,
+  fillCross = TRUE,
+  expandMax = tExpand,
+  allData = TRUE,
+  raw = res20_Treatments$combination[[treatment]] %>%
+    filter(
+      !!sym(tComb) %in% tPlotFilter
+    )
+)
+
+fSaveImages(glue::glue("20_Comb{treatment}"), res20_Treatments$p_comb[[treatment]], h = tSize)
