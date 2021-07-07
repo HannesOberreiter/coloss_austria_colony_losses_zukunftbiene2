@@ -23,7 +23,7 @@ res01_Beteiligungsrate$data$pcolor[5:8] <- colorBlindBlack8[6]
 res01_Beteiligungsrate$p1 <- res01_Beteiligungsrate$data %>%
   ggplot(aes(x = year_short)) +
   geom_line(aes(y = iPopRate, group = 2, color = pcolor)) +
-  geom_point(aes(y = iPopRate, group = 2, color = pcolor), size = 2) +
+  geom_point(aes(y = iPopRate, group = 2, color = pcolor), size = 4) +
   # geom_line(aes(y = iRate, group = 1, color = colorBlindBlack8[2]), ) +
   # geom_point(aes(y = iRate, group = 1, color = colorBlindBlack8[2]), size = 2) +
   scale_color_identity(
@@ -43,7 +43,7 @@ res01_Beteiligungsrate$p1 <- res01_Beteiligungsrate$data %>%
 res01_Beteiligungsrate$p2 <- res01_Beteiligungsrate$data %>%
   ggplot(aes(x = year_short)) +
   geom_line(aes(y = hPopRate, group = 2, color = pcolor)) +
-  geom_point(aes(y = hPopRate, group = 2, color = pcolor), size = 2) +
+  geom_point(aes(y = hPopRate, group = 2, color = pcolor), size = 4) +
   # geom_line(aes(y = hRate, group = 1, color = colorBlindBlack8[2]) ) +
   # geom_point(aes(y = hRate, group = 1, color = colorBlindBlack8[2]),  size = 2) +
   scale_color_identity() +
