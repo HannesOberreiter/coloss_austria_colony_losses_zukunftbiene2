@@ -68,7 +68,7 @@ res15_OP_Network$connection <- res15_OP_Network$data %>%
     distinct(name, connection, .keep_all = TRUE) %>%
     mutate(
         # nicer names for plot
-        print_name = glue::glue("{name}\n{fPrettyNum(round(connection_percent,1))}%"),
+        print_name = glue::glue("{name}\n{fPrettyNum(round(answers,1))}%"),
         print_name = forcats::fct_reorder(print_name, sort(print_name))
     ) %>%
     glimpse()
