@@ -121,3 +121,128 @@ tempDataHist <- tempData %>%
 res19_VarroaCheck[["hist"]] <- fHistTreatment(tempDataHist, c("T_vcount_01", "T_vcount_12"))
 
 fSaveImages("19_VarroaControlDistr", res19_VarroaCheck[["hist"]][["plot"]], h = 10)
+
+# Method Analysis -----------------------------------------------------------------
+# Alcohol wash
+# Sticky board (or other collection tray below hive)
+# Sugar shake / roll
+# Visual inspection of adult bees
+# Visual inspection of drone brood
+# Sent sample to lab
+# Other
+# Auswaschmethode	Bodeneinlage (Varroatasse, Stockwindel...)	Staubzuckermethode	Visuelle Inspektion erwachsener Bienen	Visuelle Inspektion Drohnenbrut	Laboranalyse eingesandter Proben	Sonstiges
+
+res19_VarroaCheckMethod <- list()
+
+res19_VarroaCheckMethod$deNames <- c(
+    checked_washing = "Auswaschmethode",
+    checked_floor = "Bodeneinlage",
+    checked_sugar = "Staubzuckermethode",
+    checked_visual = "Visuelle Inspektion erwachsener Bienen",
+    checked_drone = "Visuelle Inspektion Drohnenbrut",
+    checked_lab = "Laboranalyse eingesandter Proben",
+    checked_other = "Sonstiges"
+)
+
+res19_VarroaCheckMethod$deNamesShort <- c(
+    checked_washing = "Auswaschen",
+    checked_floor = "Bodeneinlage",
+    checked_sugar = "Staubzucker",
+    checked_visual = "Visuell Bienen",
+    checked_drone = "Drohnenbrut",
+    checked_lab = "Labor",
+    checked_other = "Sonstiges"
+)
+
+res19_VarroaCheckMethod$numberMethodsDf <- dfData %>%
+    filter(year == "20/21") %>%
+    select(id, hives_lost_e, hives_spring_e, hives_winter, starts_with("checked_")) %>%
+    mutate(
+        # create Binary
+        across(-c("id", "hives_lost_e", "hives_spring_e", "hives_winter"), stringr::str_replace, pattern = "N/A", replacement = NA_character_),
+        across(-c("id", "hives_lost_e", "hives_spring_e", "hives_winter"), stringr::str_replace, pattern = "[^(Nein)].*", replacement = "1"),
+        across(-c("id", "hives_lost_e", "hives_spring_e", "hives_winter"), stringr::str_replace, pattern = "Nein", replacement = "0"),
+        across(-c("id", "hives_lost_e", "hives_spring_e", "hives_winter"), as.integer)
+    ) %>%
+    mutate(
+        s = rowSums(.[5:11], na.rm = TRUE)
+    ) %>%
+    filter(s != 0)
+
+res19_VarroaCheckMethod$tableData <- res19_VarroaCheckMethod$numberMethodsDf %>%
+    select(starts_with("checked_")) %>%
+    pivot_longer(everything()) %>%
+    count(name, value) %>%
+    filter(value != 0) %>%
+    mutate(
+        Methode = str_replace_all(name, res19_VarroaCheckMethod$deNames),
+        p = n / nrow(res19_VarroaCheckMethod$numberMethodsDf) * 100,
+    ) %>%
+    mutate(
+        Prozent = p %>% round(., 1) %>% fPrettyNum()
+    ) %>%
+    arrange(desc(p))
+
+tempLabel <- glue::glue("Anzahl der Antworten zu den vewendeten Methoden zur Bestimmung des Varroabefalls, im Umfragejahr 2020/21. Insgesamt gaben {nrow(res19_VarroaCheckMethod$numberMethodsDf)} TeilnehmerInnen eine Antwort zu dieser Frage ab. Mehrfachantworten sind möglich.")
+
+res19_VarroaCheckMethod$table <- res19_VarroaCheckMethod$tableData %>%
+    select(Methode, Meldungen = n, Prozent) %>%
+    kable(
+        "latex",
+        caption = tempLabel,
+        label = "u:19:VarroaControlMethods",
+        booktabs = T,
+        escape = F,
+        align = c("l", rep("r", 2))
+    ) %>%
+    kable_styling(latex_options = "HOLD_position", font_size = 8)
+
+res19_VarroaCheckMethod$table %>% save_kable(paste0("output/tables/19_VarroaControlMethods.tex"))
+
+
+# Check Loss Rate for common Combinations
+res19_VarroaCheckMethod$glmDf <- res19_VarroaCheckMethod$numberMethodsDf %>%
+    mutate(
+        unite(
+            across(starts_with("checked_"), ~ ifelse(. == 1, cur_column(), NA)),
+            na.rm = T,
+            col = "checked_combined"
+        )
+    ) %>%
+    mutate(
+        checked_combined = stringr::str_replace_all(checked_combined, res19_VarroaCheckMethod$deNamesShort),
+        checked_combined = stringr::str_replace_all(checked_combined, "_", " &\n")
+        # checked_combined = stringr::str_remove_all(checked_combined, "checked_")
+    )
+
+# Only use the common ones (at least 10)
+tmpCommon <- res19_VarroaCheckMethod$glmDf %>%
+    count(checked_combined) %>%
+    filter(n > 10) %>%
+    pull(checked_combined) %>%
+    unique()
+
+# Temp no Control
+tmp <- dfData %>%
+    filter(year == "20/21", varroa_checked == "Nein") %>%
+    mutate(
+        checked_combined = "Keine\nKontrolle"
+    ) %>%
+    select(id, hives_lost_e, hives_spring_e, hives_winter, checked_combined)
+
+res19_VarroaCheckMethod$glmDf <- bind_rows(
+    res19_VarroaCheckMethod$glmDf %>% filter(checked_combined %in% tmpCommon),
+    tmp
+)
+
+res19_VarroaCheckMethod$result <- fGlmNullModel(res19_VarroaCheckMethod$glmDf %>% mutate(year = "20/21"), "checked_combined")
+
+res19_VarroaCheckMethod$p <- fPlot(
+    res19_VarroaCheckMethod$result,
+    tibble(),
+    "checked_combined",
+    xTitle = "Varroa Diagnose Methode",
+)
+
+
+fSaveImages("19_VarroaControlMethods", res19_VarroaCheckMethod$p, w = 8.5)
