@@ -151,9 +151,7 @@ dfData %>%
   )
 
 
-
-# Groups like Economic Paper
-
+# Groups like Economic Paper ----
 dfData <- dfData %>%
   mutate(
     operation_size = case_when(
@@ -177,8 +175,7 @@ dfData %>%
     loss_rate = mean(hives_winter - hives_spring_e)
   )
 
-
-# Fix Thymol Sign Bars
+# Fix Thymol Sign Bars ----
 treatment <- "T_thymol_"
 tComb <- "T_thymol_comb"
 tPlotFilter <- c("Nur\nSommer", "Kein\nThymol", "Sommer\nWinter")
@@ -204,7 +201,7 @@ res20_Treatments$p_comb[[treatment]] <- fPlot(
 fSaveImages(glue::glue("20_Comb{treatment}"), res20_Treatments$p_comb[[treatment]], h = tSize)
 
 
-# Fix Ox Mix Sign Bars
+# Fix Ox Mix Sign Bars ----
 treatment <- "T_oxalic_trickle_mix_"
 tComb <- "T_oxalic_trickle_mix_comb"
 tPlotFilter <- c("Nur\nSommer", "Nur\nWinter", "Sommer\nWinter", "Keine\nOx-Mix")
@@ -238,289 +235,35 @@ dfData %>%
   pull(n) %>%
   mean()
 
-# Varroa Checked Type
-
-# naja, ich habe des ganze bei COLOSS sehr vorangetrieben, weil ich glaube, dass da echt noch was drinsteckt. Vor allem die Verlustraten dieser Gruppen. Bis jetzt haben wir einfach immer nur die Verlustrate "Hat Varroamonitoring gemacht" oder nicht drin gehabt, aber du siehst ja die Bandbreite der Methoden. Da gibt es unterschiedlich valide Methoden. CO2 habe ich auch nicht am Schirm gehabt, is aber in anderen Ländern verbreitet. Vielleicht auch so ein Hinweis auf Professionalität, wenn man mit validen Methoden arbeitet!
-
-# Zu deiner Frage: Ja, ich glaube ich hätt es gern drin. Nicht in der Tabelle, aber als kurzen Abschnitt im Textkörper, weils ja nur ein Jahr umfasst
-
-# Des sind übrigens die englischsprachigen Termini:
-# Alcohol wash
-# Sticky board (or other collection tray below hive)
-# Sugar shake / roll
-# Visual inspection of adult bees
-# Visual inspection of drone brood
-# Sent sample to lab
-# Other
-
-# Selbst wenn nix rauskommt bei den Verlustraten, könn ma noch immer diskutieren, dass in Ö Hauptsächlich Stockwindeldiagnose gemacht wird, wobei #es vielleicht bessere Methoden gibt, die noch weiter ausgebaut werden sollten
-
-## Im Bericht werde ich mal rein deskriptiv bleiben ohne in Kontext mit Verlustrate.
-
-# Robert Brodschneider  15:34 Uhr
-# Dann fragt sich jeder, warum hams des net angeschaut?
-
-# Hannes  15:34 Uhr
-# tzzzz
-# 15:37 Uhr
-# Soll ich dann Kombinationen machen oder jedes für sich und im Text Anmerken, dass in der Gruppe “Drone” auch Personen von “Floor” drinnen sein könnten?
-
-
-p <- dfData %>%
-  filter(year == "20/21") %>%
-  select(starts_with("checked_")) %>%
-  select(1:6) %>%
-  pivot_longer(everything()) %>%
-  mutate(
-    name = str_remove(name, "checked_")
-  ) %>%
-  filter(value != "N/A") %>%
-  count(name, value) %>%
-  ggplot(aes(x = name, y = n, fill = value)) +
-  geom_col()
-
-fSaveImages("varroa_checked_play", p)
-
-
-dfData %>%
-  count(checked_other) %>%
-  drop_na()
-
-
-tmpData <- dfData %>%
-  filter(year == "20/21") %>%
-  mutate(
-    unite(
-      across(starts_with("checked_"), ~ ifelse(. == "Ja", cur_column(), NA)),
-      na.rm = T,
-      col = "checked_combined"
-    )
-  ) %>%
-  mutate(
-    checked_combined = stringr::str_remove_all(checked_combined, "checked_"),
-    checked_combined = ifelse(checked_combined == "", "Nein", checked_combined)
-  )
-
-
-resX_Checked <- list()
-myFactor <- "checked_combined"
-
-resX_Checked$result <- fGlmNullModel(tmpData, myFactor) %>%
-  filter(n >= 10)
-# resX_Checked$chi <- fChistar(resX_Checked$result, myFactor)
-
-resX_Checked$p <- fPlot(
-  resX_Checked$result,
-  tibble(),
-  f = myFactor,
-  # allData = TRUE,
-  # raw = tmpData %>% drop_na({{ myFactor }})
-) +
-  ggplot2::theme(
-    axis.text.x = ggplot2::element_text(angle = 90)
-  )
-
-fSaveImages("playing", resX_Checked$p)
-
-## Do a "Network Analysis" which cohorts belong to which
-
-glimpse(dfData)
-
-
-# Hobby vs Big Network
-
-tmpH <- dfData %>%
-  filter(hives_winter < 25) %>%
-  select(id, op_migratory_beekeeper:op_foreign_wax, flow_brassica_napus:flow_melezitose) %>%
-  mutate(
-    across(-id, ~ ifelse(. == "Ja", 1, 0))
-  )
-
-tmpP <- dfData %>%
-  filter(hives_winter >= 25) %>%
-  select(id, op_migratory_beekeeper:op_foreign_wax, flow_brassica_napus:flow_melezitose) %>%
-  mutate(
-    across(-id, ~ ifelse(. == "Ja", 1, 0))
-  )
-
-Ht1 <- tmpH %>%
-  mutate(id_count = n()) %>%
-  pivot_longer(-c(id, id_count)) %>%
-  group_by(name) %>%
-  mutate(size = sum(value, na.rm = TRUE) / first(id_count)) %>%
-  ungroup() %>%
-  filter(value == 1)
-
-
-Pt1 <- tmpP %>%
-  mutate(id_count = n()) %>%
-  pivot_longer(-c(id, id_count)) %>%
-  group_by(name) %>%
-  mutate(size = sum(value, na.rm = TRUE) / first(id_count)) %>%
-  ungroup() %>%
-  filter(value == 1)
-
-# Create a second Dummy Set for joining
-Ht2 <- Ht1 %>%
-  rename(name2 = name) %>%
-  select(id, name2)
-
-Pt2 <- Pt1 %>%
-  rename(name2 = name) %>%
-  select(id, name2)
-
-coords <- tibble(
-  deg = seq(min(1), max(360), length.out = length(unique(Ht1$name)) + 1) %>% tail(-1),
-  name = unique(Ht1$name)
+# GLM Multivariable ----
+y <- glm(as.formula(glue(
+  "loss_rate_e~log(young_queens+1)*op_size*op_migratory_beekeeper"
+)),
+family = quasibinomial(link = "logit"),
+data = tempData, na.action = na.omit,
+weight = hives_lost_e + hives_spring_e
+)
+# specify predictor and target variables
+test <- tibble(
+  y = "loss_rate_e",
+  x = c("log(young_queens+1)", "op_size", "op_migratory_beekeeper", "log(young_queens+1)*op_size", "log(young_queens+1)*op_migratory_beekeeper", "op_migratory_beekeeper+op_size", "op_migratory_beekeeper+op_migratory_beekeeper", "op_size + op_migratory_beekeeper", "op_size * op_migratory_beekeeper", "log(young_queens+1) + op_size + op_migratory_beekeeper", "log(young_queens+1) * op_size * op_migratory_beekeeper")
 ) %>%
-  # Convert to Coordinates
+  mutate(x = paste0(x, " + year"))
+dt_model_info <- test %>% # create combinations
   mutate(
-    theta = 2 * pi * deg / 360,
-    x = 5 * sin(theta),
-    y = 5 * cos(theta)
+    model_id = row_number(), # create model id
+    frml = paste0(y, "~", x)
+  ) %>% # create model formula
+  group_by(model_id, y, x) %>% # group by the above
+  nest() %>% # nest data
+  mutate(
+    m = map(data, ~ glm(.$frml,
+      family = quasibinomial(link = "logit"),
+      data = tempData, na.action = na.omit, weight = hives_lost_e + hives_spring_e
+    )), # create models
+    m_table = map(m, ~ broom::tidy(.)), # tidy model output
+    performance = map(m, ~ performance::model_performance(.)),
   )
 
-Hp <- Ht1 %>%
-  left_join(coords) %>%
-  left_join(Ht2) %>%
-  filter(name != name2) %>%
-  rowwise() %>%
-  mutate(
-    connection = stringr::str_sort(c(name, name2)) %>% paste0(collapse = "-")
-  ) %>%
-  add_count(connection) %>%
-  mutate(n = n / first(id_count)) %>%
-  distinct(name, connection, .keep_all = TRUE) %>%
-  arrange(desc(n))
-
-Pp <- Pt1 %>%
-  left_join(coords) %>%
-  left_join(Pt2) %>%
-  filter(name != name2) %>%
-  rowwise() %>%
-  mutate(
-    connection = stringr::str_sort(c(name, name2)) %>% paste0(collapse = "-")
-  ) %>%
-  add_count(connection) %>%
-  mutate(n = n / first(id_count)) %>%
-  distinct(name, connection, .keep_all = TRUE) %>%
-  arrange(desc(n))
-
-glimpse(Hp)
-
-
-p_hobby <- Hp %>% mutate(type = "< 25 Colonies")
-p_big <- Pp %>% mutate(type = ">= 25 Colonies")
-
-tempAbstract <- p_big %>%
-  select(n, type, connection) %>%
-  rename(n_big = n, type_big = type)
-p_diff <- p_hobby %>%
-  left_join(tempAbstract) %>%
-  mutate(
-    diff = n - n_big,
-    a = abs(diff),
-    diff_dis = ifelse(diff < 0, "negative", "positive")
-  )
-glimpse(p_diff)
-
-p_diff %>%
-  ggplot(
-    aes(
-      x = x,
-      y = y,
-      group = connection
-    )
-  ) +
-  geom_line(aes(color = diff_dis, alpha = a), size = 2, show.legend = TRUE) +
-  geom_point(aes(), color = "black", show.legend = FALSE) +
-  geom_text(
-    aes(label = name, y = ifelse(y < 0, y - 0.5, y + 0.5)),
-    show.legend = FALSE,
-    check_overlap = TRUE,
-    nudge_y = 0.02
-  ) +
-  ggplot2::scale_colour_viridis_d() +
-  ggplot2::coord_fixed(clip = "off") +
-  theme_void()
-
-
-dplyr::bind_rows(p_hobby, p_big) %>%
-  ggplot(
-    aes(
-      x = x,
-      y = y, group = connection, size = size, color = name
-    )
-  ) +
-  geom_line(aes(size = n, alpha = n), color = "black", show.legend = FALSE) +
-  geom_point(show.legend = FALSE) +
-  geom_text(aes(label = name), show.legend = FALSE, check_overlap = TRUE, nudge_y = 0.02) +
-  facet_wrap(~type) +
-  theme_void()
-
-
-#### Network Flow
-
-
-tmp <- dfData %>%
-  select(id, flow_brassica_napus:flow_melezitose) %>%
-  mutate(
-    across(-id, ~ ifelse(. == "Ja", 1, 0))
-  )
-
-t1 <- tmp %>%
-  mutate(id_count = n()) %>%
-  pivot_longer(-c(id, id_count)) %>%
-  group_by(name) %>%
-  mutate(size = sum(value, na.rm = TRUE) / first(id_count)) %>%
-  ungroup() %>%
-  filter(value == 1)
-
-t2 <- t1 %>%
-  rename(name2 = name) %>%
-  select(id, name2)
-
-coords <- tibble(
-  deg = seq(min(1), max(360), length.out = length(unique(t1$name)) + 1) %>% tail(-1),
-  name = unique(t1$name)
-) %>%
-  # Convert to Coordinates
-  mutate(
-    theta = 2 * pi * deg / 360,
-    x = 5 * sin(theta),
-    y = 5 * cos(theta)
-  )
-
-p <- t1 %>%
-  left_join(coords) %>%
-  left_join(t2) %>%
-  filter(name != name2) %>%
-  rowwise() %>%
-  mutate(
-    connection = stringr::str_sort(c(name, name2)) %>% paste0(collapse = "-")
-  ) %>%
-  add_count(connection) %>%
-  mutate(n = n / first(id_count)) %>%
-  distinct(name, connection, .keep_all = TRUE) %>%
-  arrange(desc(n))
-
-p %>%
-  ggplot(
-    aes(
-      x = x,
-      y = y, group = connection, size = size, color = name
-    )
-  ) +
-  geom_line(data = p %>% distinct(connection, .keep_all = TRUE), aes(group = id, size = n, alpha = n), color = "black", show.legend = FALSE) +
-  geom_point(show.legend = FALSE) +
-  geom_text(
-    aes(label = name, y = ifelse(y < 0, y - 0.5, y + 0.5)),
-    show.legend = FALSE,
-    check_overlap = TRUE,
-    nudge_y = 0.02
-  ) +
-  ggplot2::coord_fixed(clip = "off") +
-  theme_void()
-
-p %>% distinct(connection, .keep_all = TRUE)
-
+# access model info
+dt_model_info %>% unnest(performance)
