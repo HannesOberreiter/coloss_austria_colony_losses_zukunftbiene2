@@ -1,7 +1,7 @@
 res15_OP_Network <- list()
 
 # Names of Operational Questions (Yes, No, Uncertain, NA)
-# Shorter Version for NEtwork
+# Shorter Version for Network
 OPs <- c(
     "op_cert_org_beek", "op_migratory_beekeeper", "op_varroatolerant",
     "op_plastic_hives", "op_insulated_hives", "op_mash_bottom_board",
@@ -47,10 +47,6 @@ tmp <- res15_OP_Network$data %>%
     rename(name2 = name) %>%
     select(id, name2)
 
-# Testing
-round(fCircleCoordinates(unique(tmp$name2))$x)
-
-
 res15_OP_Network$connection <- res15_OP_Network$data %>%
     # Creating Coordinates from unique names, using the same for both groups
     left_join(fCircleCoordinates(unique(tmp$name2))) %>%
@@ -64,16 +60,18 @@ res15_OP_Network$connection <- res15_OP_Network$data %>%
     ) %>%
     group_by(op_size_split_25, connection) %>%
     mutate(
+        # Gives us the relative rate of the answers combination
         connection_percent = n() / first(total_count) * 100
     ) %>%
     arrange(desc(connection_percent)) %>%
+    # don't need all the double entries, could also work with group_by
     distinct(name, connection, .keep_all = TRUE) %>%
     mutate(
+        # nicer names for plot
         print_name = glue::glue("{name}\n{fPrettyNum(round(connection_percent,1))}%"),
         print_name = forcats::fct_reorder(print_name, sort(print_name))
     ) %>%
     glimpse()
-
 
 res15_OP_Network$p <- res15_OP_Network$connection %>%
     ggplot(
@@ -82,26 +80,16 @@ res15_OP_Network$p <- res15_OP_Network$connection %>%
     geom_line(
         aes(size = connection_percent, alpha = connection_percent),
         color = colorBlindBlack8[3]
-        # alpha = 0.5,
-        # size = 2
     ) +
     geom_point(show.legend = FALSE) +
     geom_text(
         aes(
+            # dodge around, double ifelse because switch wont work ?
             x = ifelse(x > 0, x + 0.6, ifelse(near(round(x), 0), x, x - 0.6)),
             y = ifelse(y < 0, y - 0.8, y + 0.8)
         ),
         size = 3,
-        show.legend = FALSE,
-        check_overlap = TRUE,
-        nudge_y = 0.02
-    ) +
-    scale_color_viridis_c(
-        "Kombination [%]",
-        option = "inferno",
-        direction = -1,
-        # breaks = seq(0, 100, 10),
-        # limits = c(1, 100)
+        check_overlap = TRUE # still have for each point two entries so remove one with this
     ) +
     scale_size(
         "Häufigkeit der Kombination [%]",
@@ -113,6 +101,7 @@ res15_OP_Network$p <- res15_OP_Network$connection %>%
     facet_wrap(~op_size_split_25) +
     ggplot2::guides(alpha = "none") +
     ggplot2::theme(
+        # cleanup we could also work from void up
         legend.position = "bottom",
         axis.line.y = element_blank(),
         panel.grid.major.y = element_blank(),
