@@ -14,5 +14,5 @@ fCircleCoordinates <- function(names) {
 }
 
 # Simple Testcase
-type_of(fCircleCoordinates(tibble())) == "list"
+typeof(fCircleCoordinates(tibble())) == "list"
 nrow(fCircleCoordinates(tibble("test"))) == 1
