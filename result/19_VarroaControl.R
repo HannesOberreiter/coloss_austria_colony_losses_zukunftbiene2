@@ -156,16 +156,16 @@ res19_VarroaCheckMethod$deNamesShort <- c(
 
 res19_VarroaCheckMethod$numberMethodsDf <- dfData %>%
     filter(year == "20/21") %>%
-    select(id, hives_lost_e, hives_spring_e, hives_winter, starts_with("checked_")) %>%
+    select(id, hives_lost_e, hives_spring_e, hives_winter, lost_rate_e, starts_with("checked_")) %>%
     mutate(
         # create Binary
-        across(-c("id", "hives_lost_e", "hives_spring_e", "hives_winter"), stringr::str_replace, pattern = "N/A", replacement = NA_character_),
-        across(-c("id", "hives_lost_e", "hives_spring_e", "hives_winter"), stringr::str_replace, pattern = "[^(Nein)].*", replacement = "1"),
-        across(-c("id", "hives_lost_e", "hives_spring_e", "hives_winter"), stringr::str_replace, pattern = "Nein", replacement = "0"),
-        across(-c("id", "hives_lost_e", "hives_spring_e", "hives_winter"), as.integer)
+        across(starts_with("checked_"), stringr::str_replace, pattern = "N/A", replacement = NA_character_),
+        across(starts_with("checked_"), stringr::str_replace, pattern = "[^(Nein)].*", replacement = "1"),
+        across(starts_with("checked_"), stringr::str_replace, pattern = "Nein", replacement = "0"),
+        across(starts_with("checked_"), as.integer)
     ) %>%
     mutate(
-        s = rowSums(.[5:11], na.rm = TRUE)
+        s = rowSums(.[6:12], na.rm = TRUE)
     ) %>%
     filter(s != 0)
 
@@ -228,12 +228,13 @@ tmp <- dfData %>%
     mutate(
         checked_combined = "Keine\nKontrolle"
     ) %>%
-    select(id, hives_lost_e, hives_spring_e, hives_winter, checked_combined)
+    select(id, hives_lost_e, hives_spring_e, hives_winter, checked_combined, lost_rate_e)
 
 res19_VarroaCheckMethod$glmDf <- bind_rows(
     res19_VarroaCheckMethod$glmDf %>% filter(checked_combined %in% tmpCommon),
     tmp
 )
+
 
 res19_VarroaCheckMethod$result <- fGlmNullModel(res19_VarroaCheckMethod$glmDf %>% mutate(year = "20/21"), "checked_combined")
 
@@ -241,8 +242,9 @@ res19_VarroaCheckMethod$p <- fPlot(
     res19_VarroaCheckMethod$result,
     tibble(),
     "checked_combined",
+    raw = res19_VarroaCheckMethod$glmDf,
+    allData = TRUE,
     xTitle = "Varroa Diagnose Methode",
 )
-
 
 fSaveImages("19_VarroaControlMethods", res19_VarroaCheckMethod$p, w = 8.5)
