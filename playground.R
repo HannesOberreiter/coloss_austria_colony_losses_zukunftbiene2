@@ -236,3 +236,125 @@ dt_model_info <- test %>% # create combinations
 dt_model_info %>% unnest(performance)
 
 # Other Stuff ------
+
+
+x <- read.delim(pipe("pbpaste"), sep = " ")
+
+y <- x %>%
+  mutate(
+    across(everything(), str_remove_all, pattern = "\\([^)]*"),
+    across(everything(), str_remove_all, pattern = "\\)"),
+    across(everything(), str_remove_all, pattern = "\\."),
+  ) %>%
+  add_row(Jahr = "2020", Imker = "31923", Bienenvölker = "426121") %>%
+  mutate(
+    across(everything(), as.integer)
+  )
+
+x %>%
+  mutate(
+    across(everything(), str_remove_all, pattern = "\\([^)]*"),
+    across(everything(), str_remove_all, pattern = "\\)"),
+    across(everything(), str_remove_all, pattern = "\\."),
+  ) %>%
+  add_row(Jahr = "2020", Imker = "31923", Bienenvölker = "426121") %>%
+  mutate(
+    across(everything(), as.integer)
+  ) %>%
+  arrange(Jahr) %>%
+  y() %>%
+  clipr::write_clip()
+
+
+y <- y %>%
+  mutate(Jahr = Jahr %>% as.character() %>% lubridate::as_date(Jahr, format = "%Y")) %>%
+  glimpse()
+
+
+p1 <- y %>% ggplot(aes(Jahr, Imker)) +
+  ylab("ImkerInnen") +
+  geom_step() +
+  geom_area() +
+  geom_point() +
+  scale_x_date(
+    NULL,
+    breaks = scales::breaks_width("2 years"),
+    labels = scales::label_date("'%y"),
+    expand = c(0, 0)
+  ) +
+  ggplot2::scale_y_continuous(
+    limits = c(0, NA),
+    breaks = scales::breaks_pretty(),
+    labels = scales::label_number_auto()
+  ) +
+  ggplot2::coord_cartesian(clip = "off") +
+  xlab("Jahr")
+
+
+
+p2 <- y %>% ggplot(aes(Jahr, Bienenvölker)) +
+  geom_step() +
+  geom_point() +
+  ggplot2::scale_y_continuous(
+    limits = c(0, NA),
+    breaks = scales::breaks_pretty(),
+    labels = scales::label_number_auto()
+  ) +
+  scale_x_date(
+    NULL,
+    breaks = scales::breaks_width("2 years"),
+    labels = scales::label_date("'%y"),
+    expand = c(0, 0)
+  ) +
+  ggplot2::coord_cartesian(clip = "off") +
+  xlab("Jahr")
+p2
+patchwork <- (p1 + p2) + plot_annotation(
+  title = "ImkerInnen und Bienenvölker in Österreich seit 1990 bis 2020",
+  caption = "Daten von Biene Österreich",
+)
+
+fSaveImages("test", patchwork, w = 15)
+
+
+iris %>%
+  ggplot(aes(Petal.Length, Petal.Width, color = Species)) +
+  geom_point(color = "black") +
+  geom_line()
+
+
+
+iris %>%
+  mutate(
+    NewCol = .data$Species,
+    NewCol = .$NewCol
+  )
+
+iris %>%
+  mutate(
+    NewCol = .data$Species,
+    NewCol = NULL
+  )
+
+xy <- expr(x + y)
+xz <- expr(x + z)
+yz <- expr(y + z)
+abc <- exprs(a, b, c)
+
+expr(((!!xy)) + !!yz - !!xy) # (3)
+expr((!!xy) + !!yz - !!xy) # (3)
+
+
+dfData %>%
+  filter(year == "20/21") %>%
+  summarise(
+    hives_winter = sum(hives_winter),
+    hives_lost = sum(hives_lost),
+    hives_lost_e = sum(hives_lost_e),
+    lost_a = sum(lost_a),
+    lost_b = sum(lost_b),
+    lost_c = sum(lost_c),
+    lost_sum = sum(lost_a, lost_c),
+    loss_rate = (lost_a + lost_c) / hives_winter * 100,
+    lost_control = hives_lost_e / hives_winter * 100
+  )
