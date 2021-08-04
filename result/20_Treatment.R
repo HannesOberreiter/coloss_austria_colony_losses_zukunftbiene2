@@ -32,8 +32,10 @@ for (treatment in treatmentList$tsingle[-1]) {
 
     fSaveImages(glue::glue("20_TreatmentDistr_{treatment}"), res20_Treatments$hist[[treatment]]$p, h = 10)
 }
+
 # Combination -----------------------------------------------------------------
 for (treatment in treatmentList$tsingle[-1]) {
+    # for (treatment in treatmentList$tsingle[10]) {
     message(glue::glue("Plot and Table: {treatment}"))
     tComb <- glue::glue("{treatment}comb")
     tSpring <- glue::glue("{treatment}totalyn_spring")
@@ -61,9 +63,9 @@ for (treatment in treatmentList$tsingle[-1]) {
                 !!sym(tSummer) == 1 & (!!sym(tSpring) + !!sym(tWinter)) == 0 ~ tLevels[[2]],
                 !!sym(tWinter) == 1 & (!!sym(tSummer) + !!sym(tSpring)) == 0 ~ tLevels[[3]],
                 # Combinations of Seasons
-                !!sym(tSpring) == 0 & (!!sym(tSummer) + !!sym(tWinter)) == 2 ~ tLevels[[4]],
-                !!sym(tSummer) == 0 & (!!sym(tSpring) + !!sym(tWinter)) == 2 ~ tLevels[[5]],
-                !!sym(tWinter) == 0 & (!!sym(tSummer) + !!sym(tSpring)) == 2 ~ tLevels[[6]],
+                !!sym(tWinter) == 0 & (!!sym(tSummer) + !!sym(tSpring)) == 2 ~ tLevels[[4]],
+                !!sym(tSpring) == 0 & (!!sym(tSummer) + !!sym(tWinter)) == 2 ~ tLevels[[5]],
+                !!sym(tSummer) == 0 & (!!sym(tWinter) + !!sym(tSpring)) == 2 ~ tLevels[[6]],
                 # All three Seasons
                 (!!sym(tWinter) + !!sym(tSummer) + !!sym(tSpring)) == 3 ~ tLevels[[7]],
                 # No Treatment
@@ -107,6 +109,7 @@ for (treatment in treatmentList$tsingle[-1]) {
         arrange(year, !!sym(tComb))
 
     tCols <- ifelse(nrow(res20_Treatments$result_comb[[treatment]]) <= 12, 2, 1)
+    tExpand <- ifelse(nrow(res20_Treatments$result_comb[[treatment]]) <= 12, 0.07, 0.1)
     tFree <- ifelse(nrow(res20_Treatments$result_comb[[treatment]]) <= 12, "fixed", "free_x")
     tSize <- ifelse(nrow(res20_Treatments$result_comb[[treatment]]) <= 12, 6, 10)
 
@@ -125,7 +128,13 @@ for (treatment in treatmentList$tsingle[-1]) {
         xTitle = "",
         facet_scales = tFree,
         facet_cols = tCols,
-        fillCross = TRUE
+        fillCross = TRUE,
+        expandMax = tExpand,
+        allData = TRUE,
+        raw = res20_Treatments$combination[[treatment]] %>%
+            filter(
+                !!sym(tComb) %in% tPlotFilter
+            )
     )
 
     fSaveImages(glue::glue("20_Comb{treatment}"), res20_Treatments$p_comb[[treatment]], h = tSize)
@@ -139,6 +148,7 @@ for (treatment in treatmentList$tsingle[-1]) {
             ),
         caption,
         tComb,
-        glue::glue("u:20treatment{treatment}")
+        glue::glue("u:20treatment{treatment}"),
+        fontSize = 6
     )
 }

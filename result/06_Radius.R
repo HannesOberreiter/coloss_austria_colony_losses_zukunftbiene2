@@ -1,7 +1,7 @@
 res06_Radius <- list()
-
 res06_Radius$data <- dfData %>%
   mutate(
+    apiary_nearby = if_else(apiaries == 1, "nur einen Bienenstand", apiary_nearby),
     apiary_nearby = replace_na(apiary_nearby, "keine Angaben") %>%
       as.factor() %>%
       fct_relevel("keine Angaben", after = Inf)
@@ -10,7 +10,7 @@ res06_Radius$data <- dfData %>%
   group_by(year, apiary_nearby) %>%
   summarise(
     nNearby = n(),
-    npNearby = fPrettyNum((nNearby * 100 / n[[1]]), 2)
+    npNearby = fPrettyNum(round((nNearby * 100 / n[[1]]), 1), 1)
   )
 
 res06_Radius$tab <- res06_Radius$data[, -1] %>%
@@ -23,7 +23,7 @@ res06_Radius$tab <- res06_Radius$data[, -1] %>%
     col.names = c("Alle Völker innerhalb \\SI{15}{\\kilo\\meter} Radius", "Imkereien [\\textit{n}]", "[\\%]"),
     align = c("l", rep("r", 2))
   ) %>%
-  kable_styling(latex_options = "HOLD_position", font_size = 10)
+  kable_styling(latex_options = "HOLD_position", font_size = 8)
 
 begin <- 1
 for (i in unique(res06_Radius$data$year)) {

@@ -1,4 +1,4 @@
-fSaveTable <- function(filename = filename, data = x, caption = caption, myFactor = f, latexLabel = l, firstCol = "") {
+fSaveTable <- function(filename = filename, data = x, caption = caption, myFactor = f, latexLabel = l, firstCol = "", fontSize = 8) {
   myvar <- sym(myFactor)
   tab <- data %>%
     mutate(
@@ -20,7 +20,7 @@ fSaveTable <- function(filename = filename, data = x, caption = caption, myFacto
       col.names = c(firstCol, "Imkereien [\\textit{n}]", "[\\%]", "Verlustrate [\\%]", "95\\% CI [\\%]"),
       align = c("l", rep("r", 4))
     ) %>%
-    kable_styling(latex_options = "HOLD_position", font_size = 10)
+    kable_styling(latex_options = "HOLD_position", font_size = fontSize)
 
   begin <- 1
   for (i in unique(data$year)) {

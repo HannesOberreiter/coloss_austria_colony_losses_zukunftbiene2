@@ -9,7 +9,7 @@ res01_Beteiligungsrate$data <- tibble::tribble(
   "2017/18", 27580, 1391, 5.0, 353267, 28373, 8.0,
   "2018/19", 28432, 1534, 5.4, 373412, 33651, 9.0,
   "2019/20", 30237, 1539, 5.1, 390607, 30724, 7.9,
-  "2020/21", 31923, 0, 0, 426121, 0, 0
+  "2020/21", 31923, 1406, 4.4, 426121, 29638, 7.0
 ) %>%
   mutate(
     iPopRate = iPop * 100 / first(iPop) - 100,
@@ -23,7 +23,7 @@ res01_Beteiligungsrate$data$pcolor[5:8] <- colorBlindBlack8[6]
 res01_Beteiligungsrate$p1 <- res01_Beteiligungsrate$data %>%
   ggplot(aes(x = year_short)) +
   geom_line(aes(y = iPopRate, group = 2, color = pcolor)) +
-  geom_point(aes(y = iPopRate, group = 2, color = pcolor), size = 2) +
+  geom_point(aes(y = iPopRate, group = 2, color = pcolor), size = 4) +
   # geom_line(aes(y = iRate, group = 1, color = colorBlindBlack8[2]), ) +
   # geom_point(aes(y = iRate, group = 1, color = colorBlindBlack8[2]), size = 2) +
   scale_color_identity(
@@ -43,7 +43,7 @@ res01_Beteiligungsrate$p1 <- res01_Beteiligungsrate$data %>%
 res01_Beteiligungsrate$p2 <- res01_Beteiligungsrate$data %>%
   ggplot(aes(x = year_short)) +
   geom_line(aes(y = hPopRate, group = 2, color = pcolor)) +
-  geom_point(aes(y = hPopRate, group = 2, color = pcolor), size = 2) +
+  geom_point(aes(y = hPopRate, group = 2, color = pcolor), size = 4) +
   # geom_line(aes(y = hRate, group = 1, color = colorBlindBlack8[2]) ) +
   # geom_point(aes(y = hRate, group = 1, color = colorBlindBlack8[2]),  size = 2) +
   scale_color_identity() +

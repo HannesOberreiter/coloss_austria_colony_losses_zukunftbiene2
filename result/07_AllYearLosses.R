@@ -2,6 +2,9 @@ res07_allYearLosses <- list()
 
 
 dfData %>% fGlmNullModel(., "global")
+dfData %>%
+  group_by(year) %>%
+  summarise(sum(hives_winter))
 
 # Hard-Coded as I don't have all previous years
 res07_allYearLosses$data <- tibble::tribble(
@@ -19,9 +22,24 @@ res07_allYearLosses$data <- tibble::tribble(
   "2017/18", 11.8, 11.1, 12.5, 1391, 28373,
   "2018/19", 15.2, 14.4, 16.1, 1534, 33651,
   "2019/20", 12.6, 11.9, 13.3, 1539, 30724,
-  "2020/21", 0, 0, 0, 0, 0,
+  "2020/21", 12.5, 11.8, 13.3, 1406, 29638,
 )
 
+res07_allYearLosses$data %>%
+  tail(4) %>%
+  summarise(mean(n))
+mean(res07_allYearLosses$data$ncolonies)
+
+# Project years mean
+res07_allYearLosses$data %>%
+  tail(4) %>%
+  summarise(mean(middle))
+res07_allYearLosses$data %>%
+  tail(4) %>%
+  summarise(mean(n))
+res07_allYearLosses$data %>%
+  tail(4) %>%
+  summarise(mean(ncolonies))
 # Plot Data Helper
 res07_allYearLosses$totalSummary <- c(
   "totalMean"       = mean(res07_allYearLosses$data$middle),
@@ -53,7 +71,8 @@ res07_allYearLosses$p <- res07_allYearLosses$data %>%
   ) +
   geom_crossbar(
     aes(xmin = lowerlim, xmax = upperlim),
-    fill = "white"
+    fill = "white",
+    alpha = 0.8
   ) +
   geom_point(size = 3) +
   geom_text(

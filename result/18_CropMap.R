@@ -40,7 +40,7 @@ for (flow in flows) {
             fill = "white"
         ) +
         geom_sf(
-            aes(group = district, fill = freq, geometry = geometry),
+            aes(group = district, fill = n, geometry = geometry),
             color = colorBlindBlack8[1],
             size = 0.2
         ) +
@@ -56,11 +56,12 @@ for (flow in flows) {
         ) +
         scale_fill_viridis_c(
             option = "inferno",
-            limits = c(0, 20),
-            breaks = seq(0, 20, 4),
+            breaks = scales::pretty_breaks(),
+            # limits = c(0, 20),
+            # breaks = seq(0, 20, 4),
             direction = -1
         ) +
-        labs(fill = glue::glue("{flowNames[[flow]]}  [%]")) +
+        labs(fill = glue::glue("{flowNames[[flow]]}  [n]")) +
         facet_wrap(
             ~year,
             ncol = 2,

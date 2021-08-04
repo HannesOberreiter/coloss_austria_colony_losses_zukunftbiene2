@@ -1,12 +1,14 @@
 res13_Altitude <- list()
 myFactor <- "altitude_group"
 
+order <- c("0-200m", "201-400m", "401-600m", "601-800m", ">800m")
+orderM <- order %>% stringr::str_remove("m")
 dfData <- dfData %>%
     mutate(
         altitude_group = cut(
             altitude,
             c(seq(0, 800, 200), Inf),
-            label = c("0-200m", "201-400m", "401-600m", "601-800m", ">800m"),
+            label = order,
             include.lowest = TRUE,
             right = TRUE
         )
@@ -21,13 +23,31 @@ res13_Altitude$result <- dfData %>%
     drop_na(altitude_group) %>%
     fGlmNullModel(., myFactor) %>%
     mutate(
-        altitude_group = str_replace(altitude_group, "m", "") %>% as_factor(),
+        altitude_group = str_remove(altitude_group, "m") %>%
+            as_factor() %>%
+            forcats::fct_relevel(orderM),
         chistar = str_replace_all(chistar, "m", "")
     )
 
 res13_Altitude$chi <- fChistar(res13_Altitude$result, myFactor)
 
-res13_Altitude$p <- fPlot(res13_Altitude$result, res13_Altitude$chi, myFactor, xTitle = "Seehöhe [m]")
+res13_Altitude$p <- fPlot(
+    res13_Altitude$result,
+    res13_Altitude$chi,
+    myFactor,
+    xTitle = "Seehöhe [m]",
+    yMax = TRUE,
+    allData = TRUE,
+    raw = dfData %>% filter(
+        apiary_nearby == "Ja" & district != "In mehr als einem Bezirk"
+    ) %>%
+        drop_na(altitude_group) %>%
+        mutate(
+            altitude_group = str_replace(altitude_group, "m", "") %>%
+                as_factor() %>%
+                forcats::fct_relevel(orderM)
+        )
+)
 
 fSaveImages("13_Altitude", res13_Altitude$p, w = 8.5)
 

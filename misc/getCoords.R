@@ -7,22 +7,23 @@ source("partials/header.R")
 library(tidygeocoder)
 
 # Google API --------------------------------------------------------------
-geoCodeResult <- dfData %>% head(10) %>%
+geoCodeResult <- dfData %>%
+  filter(year == "20/21") %>%
   mutate(
     search_address = glue("{address}, {zip}, {district}, {state}, Austria")
-  ) %>% 
+  ) %>%
   geocode(
     address = search_address,
     full_results = TRUE,
     method = "google",
     limit = 1
-  ) %>% 
+  ) %>%
   select(
     id,
     search_address:long,
     formatted_address:geometry.location_type
-  ) %>% 
-  mutate(types = as.character(types)) %>% 
+  ) %>%
+  mutate(types = as.character(types)) %>%
   separate(
     id, c("id", "year"), "-"
   )
@@ -33,7 +34,7 @@ geoCodeResult <- dfData %>% head(10) %>%
 # geoCodeResult <- dfData %>% head(2) %>%
 #   mutate(
 #     country = "Austria"
-#   ) %>% 
+#   ) %>%
 #   geocode(
 #     street = address,
 #     postalcode = zip,
@@ -47,4 +48,3 @@ geoCodeResult <- dfData %>% head(10) %>%
 
 # Export ------------------------------------------------------------------
 write_excel_csv(geoCodeResult, "./data/export_coords.csv")
-

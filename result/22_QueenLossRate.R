@@ -27,6 +27,24 @@ res22_QueenState$labels <- fLabeller(res22_QueenState$result)
 
 
 # Queen Boxplot ----------------------------------------------------------
+# States Boxplot ----------------------------------------------------------
+# We need the other way around to use te replace magic
+tempNames <- names(res22_QueenState$names)
+names(tempNames) <- res22_QueenState$names
+
+res22_QueenState$result <- res22_QueenState$result %>%
+    mutate(
+        label = ifelse(
+            chistar == "",
+            "",
+            paste0("*", chistar) %>%
+                stringr::str_replace_all(tempNames) %>%
+                # https://stackoverflow.com/questions/31761627/how-to-replace-nth-character-of-a-string-in-a-column-in-r
+                stringr::str_replace("^((?:.*?,){2}.*?)((?:.*?,){2}.*?),", "\\1\n\\2\n")
+        )
+    )
+
+
 res22_QueenState$p <- res22_QueenState$result %>%
     ggplot(aes(x = state, y = middle, color = year)) +
     # Austria
@@ -82,7 +100,16 @@ res22_QueenState$p <- res22_QueenState$result %>%
     ) +
     scale_x_discrete(labels = names(res22_QueenState$names))
 
-fSaveImages("22_QueenState", res22_QueenState$p, h = 10)
+res22_QueenState$p2 <- res22_QueenState$p +
+    coord_cartesian(clip = "off") +
+    geom_text(
+        aes(y = upper, label = label),
+        size = 2.5,
+        vjust = 0,
+        nudge_y = 0.5
+    )
+
+fSaveImages("22_QueenState", res22_QueenState$p2, h = 10)
 
 
 # Queen Table ----------------------------------------------------------
@@ -101,3 +128,8 @@ res22_QueenState$result_tab <- res22_QueenState$global %>%
     arrange(year, state)
 
 fSaveTable("22_QueenStateRate", res22_QueenState$result_tab, caption, myFactor, "u:22QueenState")
+
+# Running Mean in Austria ------
+res22_QueenState$global %>%
+    pull(middle) %>%
+    mean()

@@ -77,8 +77,19 @@ res21_Combination$result <- res21_Combination$result %>%
 
 res21_Combination$labels <- fLabeller(res21_Combination$global)
 
+# add our standard year color
+res21_Combination$result <- res21_Combination$result %>%
+    mutate(
+        yearcolor = case_when(
+            year == "17/18" ~ colorBlindBlack8[2],
+            year == "18/19" ~ colorBlindBlack8[3],
+            year == "19/20" ~ colorBlindBlack8[4],
+            year == "20/21" ~ colorBlindBlack8[5],
+        )
+    )
+
 res21_Combination$p <- res21_Combination$result %>%
-    ggplot(aes(y = middle, x = c_short_od_comb)) +
+    ggplot(aes(y = middle, x = c_short_od_comb, color = I(yearcolor))) +
     geom_hline(
         data = res21_Combination$global,
         aes(yintercept = middle),
@@ -164,7 +175,7 @@ res21_Combination$tab <- res21_Combination$result %>%
     select(short, long) %>%
     knitr::kable(
         "latex",
-        caption = "Erklärung zu den abgekürzten Kombinationen. W = Winter, S = Sommer, Einzelne Monate sind nach Saison zusammengefasst. Die Behandlungsmethoden Oxalsäure Träufeln o. Sprühen und Oxalsäure Mischung wurden zusammengefasst.",
+        caption = "Erklärung zu den abgekürzten Kombinationen. Einzelne Monate sind nach Saison zusammengefasst S = Sommer (Juni-Oktober), W = Winter (November-Jänner). Die Behandlungsmethoden Oxalsäure Träufeln o. Sprühen und Oxalsäure Mischung wurden zusammengefasst.",
         label = "u:21comb",
         booktabs = T,
         escape = F,
@@ -172,7 +183,7 @@ res21_Combination$tab <- res21_Combination$result %>%
         col.names = c("Abkürzung", "Beschreibung"),
         align = c("l", "l")
     ) %>%
-    kable_styling(latex_options = "HOLD_position", font_size = 10)
+    kable_styling(latex_options = c("HOLD_position", "scale_down"))
 
 # small bugfix as pack_rows introduces an linespaceing which breaks midrule
 res21_Combination$tab <- sub("midrule{}", "midrule", res21_Combination$tab, fixed = T)

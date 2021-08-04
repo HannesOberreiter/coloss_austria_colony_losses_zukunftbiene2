@@ -74,7 +74,7 @@ tab <- res09_States$all %>%
   kable(
     "latex",
     caption = "",
-    label = "tab:u:09states",
+    label = "u:09states",
     booktabs = T,
     escape = F,
     col.names = c(
@@ -89,7 +89,7 @@ tab <- res09_States$all %>%
     ),
     align = c("l", rep("r", 7))
   ) %>%
-  kable_styling(latex_options = "HOLD_position")
+  kable_styling(latex_options = "HOLD_position", font_size = 8)
 
 begin <- 1
 for (i in unique(res09_States$all$year)) {
@@ -106,6 +106,9 @@ tab %>% save_kable(paste0("output/tables/09_States.tex"))
 rm(tab, begin, end, i)
 
 # States Boxplot ----------------------------------------------------------
+# We need the other way around to use te replace magic
+tempNames <- names(res09_States$names)
+names(tempNames) <- res09_States$names
 
 res09_States$result <- res09_States$result %>%
   mutate(
