@@ -27,7 +27,7 @@ res16_NewFrames$p <- fPlot(
 
 fSaveImages("16_NewFrames", res16_NewFrames$p, w = 8.5)
 
-caption <- "Höhe der Winterverluste in Prozent ($\\pm$95\\%CI) und Anzahl der Antworten anhand dem relativen Anteil der im Einwinterungsjahr erneuerten Brutwaben über die Umfragejahre 2017/18 - 2020/21."
+caption <- "Höhe der Winterverluste in Prozent (und 95\\%~CI) und Anzahl der Antworten anhand dem relativen Anteil der im Einwinterungsjahr erneuerten Brutwaben über die Umfragejahre 2017/18 - 2020/21."
 
 fSaveTable(
   "16_NewFrames",

@@ -31,7 +31,7 @@ res25_CrippledBees$p <- fPlot(
 )
 
 fSaveImages("25_CrippledBees", res25_CrippledBees$p, w = 8.5)
-caption <- "Höhe der Winterverluste in Prozent ($\\pm$95\\%CI) und Anzahl der Antworten in Abhängigkeit von der Angabe wie häufig während der Sammelsaison Bienen mit verkrüppelten Flügeln in den Völkern bemerkt wurden über die Umfragejahre 2017/18 - 2020/21."
+caption <- "Höhe der Winterverluste in Prozent (und 95\\%~CI) und Anzahl der Antworten in Abhängigkeit von der Angabe wie häufig während der Sammelsaison Bienen mit verkrüppelten Flügeln in den Völkern bemerkt wurden über die Umfragejahre 2017/18 - 2020/21."
 
 res25_CrippledBees$result %>%
     mutate(

@@ -113,7 +113,7 @@ fSaveImages("22_QueenState", res22_QueenState$p2, h = 10)
 
 
 # Queen Table ----------------------------------------------------------
-caption <- "Höhe der Winterverluste durch unlösbare Königinnenprobleme in Prozent ($\\pm$95\\%CI) und Anzahl der Antworten für die einzelnen Bundesländer sowie Österreich gesamt über die Umfragejahre 2017/18 - 2020/21."
+caption <- "Höhe der Winterverluste durch unlösbare Königinnenprobleme in Prozent (und 95\\%~CI) und Anzahl der Antworten für die einzelnen Bundesländer sowie Österreich gesamt über die Umfragejahre 2017/18 - 2020/21."
 
 res22_QueenState$result_tab <- res22_QueenState$global %>%
     mutate(
@@ -130,6 +130,7 @@ res22_QueenState$result_tab <- res22_QueenState$global %>%
 fSaveTable("22_QueenStateRate", res22_QueenState$result_tab, caption, myFactor, "u:22QueenState")
 
 # Running Mean in Austria ------
+print("Running mean Queen Loss Rate:")
 res22_QueenState$global %>%
     pull(middle) %>%
     mean()

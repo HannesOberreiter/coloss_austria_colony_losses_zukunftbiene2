@@ -53,7 +53,7 @@ for (OP in OPs) {
         raw = tempData %>% filter(!!sym(myFactor) %in% c("Ja", "Nein"))
     )
 
-    caption <- glue::glue("Höhe der Winterverluste in Prozent ($\\pm$95\\%CI) und Anzahl 0000000 (eingewinerte Bienenvölker) über die Umfragejahre 2017/18 - 2020/21.")
+    caption <- glue::glue("Höhe der Winterverluste in Prozent (und 95\\%~CI) und Anzahl 0000000 (eingewinerte Bienenvölker) über die Umfragejahre 2017/18 - 2020/21.")
     fSaveTable(glue::glue("15_Operational_{OP}"), res15_OP$result[[OP]], caption, myFactor, glue::glue("u:15operational_{OP}"), fontSize = 6)
 
     fSaveImages(glue::glue("15_Operational_{OP}"), res15_OP$p[[OP]], w = 8.5, h = if_else(OP == "merged", 4, 6))

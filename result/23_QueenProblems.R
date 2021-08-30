@@ -39,7 +39,7 @@ res23_QueenProblems$pQueenLoss <- fPlot(
     raw = tempDataQueenLoss
 )
 fSaveImages("23_QueenProblems_QueenLoss", res23_QueenProblems$pQueenLoss, w = 8.5)
-caption <- "Höhe der Winterverluste (nur Verluste durch unlösbare Königinnenprobleme) in Prozent ($\\pm$95\\%CI) und Anzahl der Antworten im Zusammenhang mit den beobachteten Königinnenproblemen über die Umfragejahre 2017/18 - 2020/21."
+caption <- "Höhe der Winterverluste (nur Verluste durch unlösbare Königinnenprobleme) in Prozent (und 95\\%~CI) und Anzahl der Antworten im Zusammenhang mit den beobachteten Königinnenproblemen über die Umfragejahre 2017/18 - 2020/21."
 fSaveTable("23_QueenProblemsQueenLoss", res23_QueenProblems$resultQueenLoss, caption, myFactor, "u:23QueenProblemsQueenLoss")
 
 # Queen Problems -- Without Queen Loss Rate -----
@@ -61,5 +61,5 @@ res23_QueenProblems$pNormalLoss <- fPlot(
 )
 fSaveImages("23_QueenProblems_NormalLoss", res23_QueenProblems$pNormalLoss, w = 8.5)
 res23_QueenProblems$pNormalLoss
-caption <- "Höhe der Winterverluste (exklusive den Verlusten durch unlösbare Königinnenprobleme.) in Prozent ($\\pm$95\\%CI) und Anzahl der Antworten im Zusammenhang mit den beobachteten Königinnenproblemen über die Umfragejahre 2017/18 - 2020/21."
+caption <- "Höhe der Winterverluste (exklusive den Verlusten durch unlösbare Königinnenprobleme.) in Prozent (und 95\\%~CI) und Anzahl der Antworten im Zusammenhang mit den beobachteten Königinnenproblemen über die Umfragejahre 2017/18 - 2020/21."
 fSaveTable("23_QueenProblemsNormalLoss", res23_QueenProblems$resultNormalLoss, caption, myFactor, "u:23QueenProblemsNormalLoss")
