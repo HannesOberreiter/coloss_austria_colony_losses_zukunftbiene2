@@ -139,7 +139,7 @@ for (treatment in treatmentList$tsingle[-1]) {
 
     fSaveImages(glue::glue("20_Comb{treatment}"), res20_Treatments$p_comb[[treatment]], h = tSize)
 
-    caption <- glue::glue("Höhe der Winterverluste in Prozent ($\\pm$95\\%CI) und Anzahl der Antworten ob und wann eine {tNo} durchgeführt wurde oder nicht über die Umfragejahre 2017/18 - 2020/21")
+    caption <- glue::glue("Höhe der Winterverluste in Prozent (und 95\\%~CI) und Anzahl der Antworten ob und wann eine {tNo} durchgeführt wurde oder nicht über die Umfragejahre 2017/18 - 2020/21")
     fSaveTable(
         glue::glue("20_Comb{treatment}"),
         res20_Treatments$result_table[[treatment]] %>%

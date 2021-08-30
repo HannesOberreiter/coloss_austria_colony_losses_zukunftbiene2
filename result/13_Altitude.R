@@ -51,6 +51,6 @@ res13_Altitude$p <- fPlot(
 
 fSaveImages("13_Altitude", res13_Altitude$p, w = 8.5)
 
-caption <- "Höhe der Winterverluste in Prozent ($\\pm$95\\%CI) und Anzahl der Antworten in Abhängigkeit von der Seehöhe der Winterstandorte über die Umfragejahre 2017/18 - 2020/21. Nicht ausgewertet sind TeilnehmerInnen die „Nein“ oder „Unsicher“ oder „Ja“ bei Fragestellung „Alle Bienenvölker innerhalb eines 15 km Radius“ angaben, sowie ihre Bienenvölkerin „mehr als einem Bezirk“ aufgestellt haben."
+caption <- "Höhe der Winterverluste in Prozent (und 95\\%~CI) und Anzahl der Antworten in Abhängigkeit von der Seehöhe der Winterstandorte über die Umfragejahre 2017/18 - 2020/21. Nicht ausgewertet sind TeilnehmerInnen die „Nein“ oder „Unsicher“ oder „Ja“ bei Fragestellung „Alle Bienenvölker innerhalb eines 15 km Radius“ angaben, sowie ihre Bienenvölkerin „mehr als einem Bezirk“ aufgestellt haben."
 
 fSaveTable("13_Altitude", res13_Altitude$result, caption, myFactor, "u:13altitude")

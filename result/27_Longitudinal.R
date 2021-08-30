@@ -71,7 +71,7 @@ res27_Long$p <- fPlot(
 fSaveImages("27_Longitudinal", res27_Long$p, w = 8.5)
 
 
-caption <- "Höhe der Winterverluste in Prozent ($\\pm$95\\%CI) und Anzahl der Antworten in Abhängigkeit ob LangzeitteilnehmerIn (alle vier Jahre) oder nicht über die Umfragejahre 2017/18 - 2020/21."
+caption <- "Höhe der Winterverluste in Prozent (und 95\\%~CI) und Anzahl der Antworten in Abhängigkeit ob LangzeitteilnehmerIn (alle vier Jahre) oder nicht über die Umfragejahre 2017/18 - 2020/21."
 
 res27_Long$result %>%
     mutate(

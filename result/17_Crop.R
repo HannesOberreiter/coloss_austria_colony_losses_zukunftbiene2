@@ -37,9 +37,9 @@ for (flow in flows) {
         text = flowsDE[[flow]],
         allData = TRUE,
         raw = tempData %>% filter(!!sym(flow) %in% c("Ja", "Nein"))
-        )
+    )
 
-    caption <- glue::glue("Höhe der Winterverluste in Prozent ($\\pm$95\\%CI) und Anzahl 0000000 (eingewinerte Bienenvölker) über die Umfragejahre 2017/18 - 2020/21.")
+    caption <- glue::glue("Höhe der Winterverluste in Prozent (und 95\\%~CI) und Anzahl 0000000 (eingewinerte Bienenvölker) über die Umfragejahre 2017/18 - 2020/21.")
     fSaveTable(glue::glue("17_Crop_{flow}"), res17_Crop$result[[flow]], caption, myFactor, glue::glue("u:17crop_{flow}"))
 
     fSaveImages(glue::glue("17_Crop_{flow}"), res17_Crop$p[[flow]], w = 8.5)

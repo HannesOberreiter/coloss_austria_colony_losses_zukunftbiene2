@@ -29,6 +29,6 @@ res14_OperationSizeLoss$p <- fPlot(
 
 fSaveImages("14_OperationSizeLoss", res14_OperationSizeLoss$p, w = 8.5)
 
-caption <- "Höhe der Winterverluste in Prozent ($\\pm$95\\%CI) und Anzahl der Antworten anhand der Betriebsgröße (eingewinerte Bienenvölker) über die Umfragejahre 2017/18 - 2020/21."
+caption <- "Höhe der Winterverluste in Prozent (und 95\\%~CI) und Anzahl der Antworten anhand der Betriebsgröße (eingewinerte Bienenvölker) über die Umfragejahre 2017/18 - 2020/21."
 
 fSaveTable("14_OperationSizeLoss", res14_OperationSizeLoss$result, caption, myFactor, "u:14operationSizeLoss")

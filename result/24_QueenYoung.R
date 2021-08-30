@@ -80,7 +80,7 @@ res24_QueenYoung$pQueenLoss <- fPlot(
     raw = tempDataQueenLoss
 )
 fSaveImages("24_QueenYoung_QueenLoss", res24_QueenYoung$pQueenLoss, w = 8.5)
-caption <- "Höhe der Winterverluste (nur Verluste durch unlösbare Königinnenprobleme) in Prozent ($\\pm$95\\%CI) und Anzahl der Antworten in Abhängigkeit vom Prozentsatz junger Königinnen pro Imkerei über die Umfragejahre 2017/18 - 2020/21."
+caption <- "Höhe der Winterverluste (nur Verluste durch unlösbare Königinnenprobleme) in Prozent (und 95\\%~CI) und Anzahl der Antworten in Abhängigkeit vom Prozentsatz junger Königinnen pro Imkerei über die Umfragejahre 2017/18 - 2020/21."
 fSaveTable(
     "24_QueenYoung_QueenLoss",
     res24_QueenYoung$resultQueenLoss %>%
@@ -113,7 +113,7 @@ res24_QueenYoung$pNormalLoss <- fPlot(
     raw = tempDataNormalLoss
 )
 fSaveImages("24_QueenYoung_NormalLoss", res24_QueenYoung$pNormalLoss, w = 8.5)
-caption <- "Höhe der Winterverluste (exklusive den Verlusten durch unlösbare Königinnenprobleme.) in Prozent ($\\pm$95\\%CI) und Anzahl der Antworten in Abhängigkeit vom Prozentsatz junger Königinnen pro Imkerei über die Umfragejahre 2017/18 - 2020/21."
+caption <- "Höhe der Winterverluste (exklusive den Verlusten durch unlösbare Königinnenprobleme.) in Prozent (und 95\\%~CI) und Anzahl der Antworten in Abhängigkeit vom Prozentsatz junger Königinnen pro Imkerei über die Umfragejahre 2017/18 - 2020/21."
 fSaveTable(
     "24_QueenYoung_NormalLoss",
     res24_QueenYoung$resultNormalLoss %>%

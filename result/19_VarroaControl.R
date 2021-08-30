@@ -26,7 +26,7 @@ res19_VarroaCheck$p <- fPlot(
     raw = tempData %>% filter(!!sym(myFactor) %in% c("Ja", "Nein"))
 )
 
-caption <- "Höhe der Winterverluste in Prozent ($\\pm$95\\%CI) und Anzahl der Antworten ob eine Varroa Milben Kontrolle durchgeführt wurde oder nicht über die Umfragejahre 2017/18 - 2020/21"
+caption <- "Höhe der Winterverluste in Prozent (und 95\\%~CI) und Anzahl der Antworten ob eine Varroa Milben Kontrolle durchgeführt wurde oder nicht über die Umfragejahre 2017/18 - 2020/21"
 
 fSaveTable("19_VarroaControl", res19_VarroaCheck$result, caption, myFactor, "u:19varroacontrol")
 fSaveImages("19_VarroaControl", res19_VarroaCheck$p)
