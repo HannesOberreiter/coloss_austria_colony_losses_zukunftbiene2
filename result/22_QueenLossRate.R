@@ -130,6 +130,7 @@ res22_QueenState$result_tab <- res22_QueenState$global %>%
 fSaveTable("22_QueenStateRate", res22_QueenState$result_tab, caption, myFactor, "u:22QueenState")
 
 # Running Mean in Austria ------
+print("Running mean Queen Loss Rate:")
 res22_QueenState$global %>%
     pull(middle) %>%
     mean()
