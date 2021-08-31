@@ -36,3 +36,28 @@ for (i in unique(res06_Radius$data$year)) {
 res06_Radius$tab <- sub("midrule{}", "midrule", res06_Radius$tab, fixed = T)
 
 res06_Radius$tab %>% save_kable(paste0("output/tables/06_Radius.tex"))
+
+print("Summary Radius - Yes and Single Apiary")
+res06_Radius$data %>%
+  filter(apiary_nearby %in% c("Ja", "nur einen Bienenstand")) %>%
+  select(npNearby) %>%
+  group_by(year) %>%
+  summarise(sum = sum(npNearby))
+
+dfData %>%
+  mutate(
+    apiary_nearby = if_else(apiaries == 1, "nur einen Bienenstand", apiary_nearby),
+    apiary_nearby = replace_na(apiary_nearby, "keine Angaben") %>%
+      as.factor() %>%
+      fct_relevel("keine Angaben", after = Inf)
+  ) %>%
+  add_count(year) %>%
+  group_by(year, apiary_nearby) %>%
+  summarise(
+    nNearby = n(),
+    npNearby = round((nNearby * 100 / n[[1]]), 1)
+  ) %>%
+  filter(apiary_nearby %in% c("Ja", "nur einen Bienenstand")) %>%
+  select(npNearby) %>%
+  group_by(year) %>%
+  summarise(sum = sum(npNearby))
