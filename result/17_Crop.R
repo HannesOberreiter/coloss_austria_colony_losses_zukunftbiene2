@@ -8,7 +8,7 @@ flows <- dfData %>%
     select(starts_with("flow_")) %>%
     names()
 
-flowsDE <- c("Raps Tracht", "Sammelnde Bienen auf Mais", "Sonnenblume Tracht", "Tracht von spätblühende Zwischenfrüchte", "Waldtracht", "Waldtracht mit Melezitose")
+flowsDE <- c("Raps Tracht", "Sammelnde Bienen auf Mais", "Sonnenblume Tracht", "Tracht von spätblühenden Zwischenfrüchten", "Waldtracht", "Waldtracht mit Melezitose")
 names(flowsDE) <- flows
 
 for (flow in flows) {
