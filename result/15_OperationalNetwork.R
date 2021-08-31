@@ -19,7 +19,7 @@ names(opsDE) <- OPs
 res15_OP_Network$data <- dfData %>%
     mutate(
         # Add New Split to separate
-        op_size_split_25 = ifelse(hives_winter > 25, "Imkereien mit über 25 Völker", "Hobby-Imkereien (<= 25 Völker)")
+        op_size_split_25 = ifelse(hives_winter > 25, "Imkereien mit über 25 Völkern", "Hobby-Imkereien (<= 25 Völker)")
     ) %>%
     select(id, op_size_split_25, op_migratory_beekeeper:op_foreign_wax) %>%
     mutate(
