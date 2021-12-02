@@ -84,13 +84,17 @@ dfData$submitted[grepl("Z", dfData$id, fixed = TRUE)] <- "Zeitung"
 # Helper, change this do change months for grouping
 seasons <- tibble(
   name = c("spring", "summer", "winter"),
-  rcol = c("0[1-2]", "0[3-7]", "0[8-9]"),
+  rcol = c("0[1-2]", "0[3-7]", "[0,1][8-9,0]"),
   short = c("F", "S", "W"),
   desc = c("Frühjahr", "Sommer", "Winter")
 )
 # Temporary for Combinations
 dfData$c_short <- NA
 dfData$c_desc <- NA
+
+treatmentexp <- paste0(
+  "(", treatmentList$tsingle[1], ")\\S*", seasons$rcol[3]
+)
 
 for (i in seq_along(seasons$name)) {
   # print(paste0("Season: ", seasons$name[i]))
