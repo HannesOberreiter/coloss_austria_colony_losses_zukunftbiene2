@@ -5,7 +5,7 @@
 print("Loading Setup")
 
 # Load Data --------------------------------------------------------------
-files <- c("17_18", "18_19", "19_20", "20_21")
+files <- c("17_18", "18_19", "19_20", "20_21", '21_22')
 dfData <- vector("list", length(files))
 
 for (i in seq_along(files)) {

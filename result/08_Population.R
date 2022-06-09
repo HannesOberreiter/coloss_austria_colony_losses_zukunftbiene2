@@ -20,7 +20,7 @@ res08_Population$data
 # years and increase over summer and loss over upcoming winter in percent
 # increase is over given year (spring - spring) and loss is for following spring next year.
 # eg. 2013/2014 increase 24.4% from spring 2013 - winter 2013; loss 12.0% from winter 2013 - spring 2014
-vYears <- c(2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021)
+vYears <- c(2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022)
 dConst <- tibble(
   vIncrease = c(24.4, 24.6, 44.4, 44.9, res08_Population$data$summer_percentage) / 100,
   vLoss = c(12.0, 28.6, 7.6, 22.5, res08_Population$data$winter_loss_percentage * -1) / 100

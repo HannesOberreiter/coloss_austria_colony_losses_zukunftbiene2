@@ -6,11 +6,12 @@
 source("partials/setup.R")
 source("partials/header.R")
 source("partials/map.R")
+source("functions/functions.R")
 
 # Code --------------------------------------------------------------------
 # remove empty ones
 districtCACHE <- dfData %>%
-  filter(year == "20/21") %>%
+  filter(year == "21/22") %>%
   drop_na(longitude, latitude)
 # Filter Year
 # DISTRICT.CACHE %>% filter(year == "20/21")
@@ -69,7 +70,7 @@ p <- ggplot() +
   geom_point(data = districtCACHE, aes(longitude, latitude), size = 1, color = "red") +
   geom_text(
     data = districtCACHE %>%
-    tidyr::separate(id, c("id", "year"), "-"),
+      tidyr::separate(id, c("id", "year"), "-"),
     aes(longitude, latitude, label = id),
     check_overlap = F,
     hjust = -0.1, size = 3, color = colorBlindBlack8[4]
